@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use App\Models\User;
+
+>>>>>>> c8ee1291fb9184a643c3c8b56e2912a6f3a04b42
 return [
 
     /*
@@ -62,7 +67,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
+<<<<<<< HEAD
             'model' => env('AUTH_MODEL', App\Models\User::class),
+=======
+            'model' => env('AUTH_MODEL', User::class),
+>>>>>>> c8ee1291fb9184a643c3c8b56e2912a6f3a04b42
         ],
 
         // 'users' => [

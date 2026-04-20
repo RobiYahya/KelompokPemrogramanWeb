@@ -76,7 +76,11 @@ return [
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
+<<<<<<< HEAD
             'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),
+=======
+            'username' => env('LOG_SLACK_USERNAME', env('APP_NAME', 'Laravel')),
+>>>>>>> c8ee1291fb9184a643c3c8b56e2912a6f3a04b42
             'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
             'level' => env('LOG_LEVEL', 'critical'),
             'replace_placeholders' => true,

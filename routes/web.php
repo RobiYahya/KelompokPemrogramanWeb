@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+<<<<<<< HEAD
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
@@ -70,3 +71,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Activity Log Routes
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity_logs.index');
 });
+=======
+
+// Route::get('/', function () {
+    // return view('welcome');
+// });
+
+Route::get('/login', [LoginController::class, 'index']);
+>>>>>>> c8ee1291fb9184a643c3c8b56e2912a6f3a04b42
