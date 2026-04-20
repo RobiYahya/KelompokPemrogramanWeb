@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-=======
->>>>>>> c8ee1291fb9184a643c3c8b56e2912a6f3a04b42
 
 class LoginController extends Controller
 {
@@ -15,7 +12,6 @@ class LoginController extends Controller
     {
         return view('login');
     }
-<<<<<<< HEAD
 
     public function authenticate(Request $request)
     {
@@ -41,6 +37,4 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
         return redirect('/login');
     }
-=======
->>>>>>> c8ee1291fb9184a643c3c8b56e2912a6f3a04b42
 }
