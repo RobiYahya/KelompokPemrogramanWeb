@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ListBarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
@@ -11,14 +10,8 @@ use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\ActivityLogController;
 
-Route::get('/listbarang/{id}/{nama}', [ListBarangController::class, 'show']);
-
 Route::get('/', function () {
     return redirect()->route('login');
-});
-
-Route::get('/user/{id}', function ($id) {
-    return "User ID: " . $id;
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -76,27 +69,4 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     // Activity Log Routes
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity_logs.index');
-
-    Route::get('/users', function () {
-        return "Admin Users";
-    });
-});
-
-Route::get('/listbarang/{id}/{nama}', function ($id, $nama) {
-    return view('list_barang', [
-        'id' => $id,
-        'nama' => $nama
-    ]);
-});
-
-Route::get('/home', function () {
-    return view('home');
-});
-
-Route::get('/contact', function () {
-    return view('contact');
-});
-
-Route::get('/list_barang', function () {
-    return view('list_barang');
 });

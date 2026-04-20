@@ -69,13 +69,6 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="harga_jual_barang" class="form-label">Harga Jual</label>
-                        <input type="number" name="harga_jual" id="harga_jual_barang" class="form-input" placeholder="Masukkan harga jual" required>
-                        @error('harga_jual')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="closeModal('modal-barang')" class="btn btn-secondary">Batal</button>
