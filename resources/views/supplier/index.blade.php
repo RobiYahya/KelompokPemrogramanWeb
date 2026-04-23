@@ -49,7 +49,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role == 'admin')
                             <div class="action-buttons">
-                                <a href="{{ route('supplier.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <button onclick="openEditSupplierModal({{ $item->id }}, '{{ $item->nama }}', '{{ $item->kontak ?? '' }}', '{{ $item->telepon ?? '' }}', '{{ $item->alamat ?? '' }}')" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('supplier.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Apakah Anda yakin?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -73,3 +73,4 @@
 @endsection
 
 @include('components.modal_supplier')
+@include('components.modal_supplier_edit')

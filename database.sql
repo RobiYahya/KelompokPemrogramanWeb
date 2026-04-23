@@ -38,9 +38,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `id_pegawai`, `role`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Shofi', 'admin1@gudang.com', NULL, 'ADM001', 'admin', '$2y$12$p9QK6ILUprG/8dlAPGqCZejoLYJCu0swpLxN7xau3qdm4x8SCScCm', NULL, NOW(), NOW()),
-(2, 'Cahya', 'admin2@gudang.com', NULL, 'ADM002', 'admin', '$2y$12$p9QK6ILUprG/8dlAPGqCZejoLYJCu0swpLxN7xau3qdm4x8SCScCm', NULL, NOW(), NOW()),
-(3, 'Robi', 'manajer@gudang.com', NULL, 'MNG001', 'manager', '$2y$12$p9QK6ILUprG/8dlAPGqCZejoLYJCu0swpLxN7xau3qdm4x8SCScCm', NULL, NOW(), NOW());
+(1, 'Shofi', 'shofi@sigura.com', NULL, 'ADM001', 'admin', '$2y$12$c3NQ9JOXht9Gyk8YjPkeJOqPPemJyCT/ouLaKpsXraEARM8NPtDCK', NULL, NOW(), NOW()),
+(2, 'Cahya', 'cahya@sigura.com', NULL, 'ADM002', 'admin', '$2y$12$c3NQ9JOXht9Gyk8YjPkeJOqPPemJyCT/ouLaKpsXraEARM8NPtDCK', NULL, NOW(), NOW()),
+(3, 'Robi', 'robi@sigura.com', NULL, 'MGR001', 'manager', '$2y$12$c3NQ9JOXht9Gyk8YjPkeJOqPPemJyCT/ouLaKpsXraEARM8NPtDCK', NULL, NOW(), NOW());
 
 -- --------------------------------------------------------
 

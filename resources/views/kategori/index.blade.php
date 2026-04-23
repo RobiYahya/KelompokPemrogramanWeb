@@ -43,9 +43,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role == 'admin')
                             <div class="action-buttons">
-                                <a href="{{ route('kategori.edit', $item->id) }}" class="btn btn-sm btn-primary">
-                                    Edit
-                                </a>
+                                <button onclick="openEditKategoriModal({{ $item->id }}, '{{ $item->nama }}')" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -69,3 +67,4 @@
 @endsection
 
 @include('components.modal_kategori')
+@include('components.modal_kategori_edit')
