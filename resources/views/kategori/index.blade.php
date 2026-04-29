@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kategori - SIGURA')
+@section('title', 'Categories - SIGURA')
 
 @section('sidebar')
     @include('components.sidebar')
@@ -9,12 +9,12 @@
 @section('content')
     <div class="card-header">
         <div>
-            <h1 class="card-title">Data Kategori</h1>
-            <p class="card-subtitle">Kelola data kategori</p>
+            <h1 class="card-title">Categories</h1>
+            <p class="card-subtitle">Manage category data</p>
         </div>
         <div class="mt-4 sm:mt-0">
             @if(auth()->user()->role == 'admin')
-            <button onclick="openModal('modal-kategori')" class="btn btn-primary">+ Tambah Kategori</button>
+            <button onclick="openModal('modal-kategori')" class="btn btn-primary">+ Add Category</button>
             @endif
         </div>
     </div>
@@ -31,8 +31,8 @@
                 <thead class="table-header">
                     <tr>
                         <th class="table-header-cell">ID</th>
-                        <th class="table-header-cell">Nama Kategori</th>
-                        <th class="table-header-cell">Aksi</th>
+                        <th class="table-header-cell">Category Name</th>
+                        <th class="table-header-cell">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,10 +44,10 @@
                             @if(auth()->user()->role == 'admin')
                             <div class="action-buttons">
                                 <button onclick="openEditKategoriModal({{ $item->id }}, '{{ $item->nama }}')" class="btn btn-sm btn-primary">Edit</button>
-                                <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this category?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </div>
                             @else
@@ -57,12 +57,17 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3" class="empty-state">Belum ada data kategori</td>
+                        <td colspan="3" class="empty-state">No category data yet</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $kategori->links() }}
     </div>
 @endsection
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Incoming Item - SIGURA</title>
+    <title>Edit Incoming Item - SIGURA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>*{font-family:'Poppins',sans-serif}</style>
@@ -23,16 +23,16 @@
             <div class="mt-8"><form action="{{ route('logout') }}" method="POST">@csrf<button type="submit" class="flex items-center text-purple-100 hover:bg-purple-700 w-full px-4 py-2 rounded-lg transition text-sm"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>Logout</button></form></div>
         </div>
         <div class="flex-1 p-6 lg:p-8">
-            <div class="mb-8"><h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Add Incoming Item</h1><p class="text-gray-600">Record new incoming item</p></div>
+            <div class="mb-8"><h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Edit Incoming Item</h1><p class="text-gray-600">Update incoming item data</p></div>
             <div class="bg-white rounded-xl shadow-lg p-6">
-                <form action="{{ route('barang_masuk.store') }}" method="POST">@csrf
+                <form action="{{ route('barang_masuk.update', $barangMasuk->id) }}" method="POST">@csrf @method('PUT')
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Item</label><select name="barang_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required><option value="">Select Item</option>@foreach($barang as $b)<option value="{{ $b->id }}">{{ $b->nama }} (Stok: {{ $b->stok }})</option>@endforeach</select>@error('barang_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
-                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Quantity</label><input type="number" name="jumlah" value="{{ old('jumlah', 1) }}" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>@error('jumlah')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
-                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Date</label><input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>@error('tanggal')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
-                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Description</label><input type="text" name="keterangan" value="{{ old('keterangan') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">@error('keterangan')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
+                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Barang</label><select name="barang_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required><option value="">Select Item</option>@foreach($barang as $b)<option value="{{ $b->id }}" {{ $barangMasuk->barang_id == $b->id ? 'selected' : '' }}>{{ $b->nama }} (Stok: {{ $b->stok }})</option>@endforeach</select>@error('barang_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
+                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Jumlah</label><input type="number" name="jumlah" value="{{ old('jumlah', $barangMasuk->jumlah) }}" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>@error('jumlah')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
+                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Tanggal</label><input type="date" name="tanggal" value="{{ old('tanggal', $barangMasuk->tanggal) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>@error('tanggal')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
+                        <div class="mb-6"><label class="block text-gray-700 font-medium mb-2">Keterangan</label><input type="text" name="keterangan" value="{{ old('keterangan', $barangMasuk->keterangan) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">@error('keterangan')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror</div>
                     </div>
-                    <div class="flex items-center gap-4"><button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Save</button><a href="{{ route('barang_masuk.index') }}" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition">Cancel</a></div>
+                    <div class="flex items-center gap-4"><button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">Update</button><a href="{{ route('barang_masuk.index') }}" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition">Cancel</a></div>
                 </form>
             </div>
         </div>

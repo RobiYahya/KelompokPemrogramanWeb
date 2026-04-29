@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Manajemen Stok Gudang</title>
+    <title>Login - Warehouse Stock Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
@@ -32,7 +32,7 @@
         <!-- Login Form Section -->
         <div class="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col justify-center order-2 lg:order-1">
             <div class="mb-2">
-                <h1 class="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-800 mb-2 text-center lg:text-left">Login Sistem Manajemen Stok Gudang Koperasi Polibatam (SIGURA)</h1>
+                <h1 class="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-800 mb-2 text-center lg:text-left">Login - Warehouse Stock Management System (MAGURA)</h1>
             </div>
 
             @if ($errors->any())
@@ -45,14 +45,14 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="id_pegawai" class="form-label">ID Pegawai</label>
+                    <label for="id_pegawai" class="form-label">Employee ID</label>
                     <input 
                         type="text" 
                         id="id_pegawai" 
                         name="id_pegawai" 
                         value="{{ old('id_pegawai') }}"
                         class="form-input"
-                        placeholder="Masukkan ID Pegawai"
+                        placeholder="Enter Employee ID"
                         required
                         autocomplete="username"
                     >
@@ -66,7 +66,7 @@
                             id="password" 
                             name="password" 
                             class="form-input"
-                            placeholder="Masukkan password"
+                            placeholder="Enter password"
                             required
                             autocomplete="current-password"
                         >
@@ -90,8 +90,8 @@
 
                 <div class="mt-4 sm:mt-6 p-4 bg-purple-50 rounded-lg">
                     <p class="text-sm text-purple-800">
-                        <strong>Login sebagai Admin Gudang?</strong><br>
-                        Gunakan ID Pegawai & password untuk login
+                        <strong>Login as Warehouse Admin?</strong><br>
+                        Use Employee ID & password to login
                     </p>
                 </div>
             </form>

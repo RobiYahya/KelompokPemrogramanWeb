@@ -11,7 +11,7 @@ class BarangMasukController extends Controller
 {
     public function index()
     {
-        $barangMasuk = BarangMasuk::with('barang')->latest()->get();
+        $barangMasuk = BarangMasuk::with('barang')->latest()->paginate(10);
         $barang = Barang::all();
         return view('barang_masuk.index', compact('barangMasuk', 'barang'));
     }
@@ -47,6 +47,53 @@ class BarangMasukController extends Controller
         ]);
 
         return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil dicatat');
+    }
+
+    public function edit(BarangMasuk $barangMasuk)
+    {
+        $barang = Barang::all();
+        return view('barang_masuk.edit', compact('barangMasuk', 'barang'));
+    }
+
+    public function update(Request $request, BarangMasuk $barangMasuk)
+    {
+        try {
+            $validated = $request->validate([
+                'barang_id' => 'required|exists:barang,id',
+                'jumlah' => 'required|integer|min:1',
+                'tanggal' => 'required|date',
+                'keterangan' => 'nullable|string|max:255',
+            ]);
+
+            // Kembalikan stok lama
+            $barangLama = Barang::find($barangMasuk->barang_id);
+            if ($barangLama) {
+                $barangLama->stok -= $barangMasuk->jumlah;
+                $barangLama->save();
+            }
+
+            // Update data
+            $barangMasuk->update($validated);
+
+            // Tambah stok baru
+            $barangBaru = Barang::find($request->barang_id);
+            if ($barangBaru) {
+                $barangBaru->stok += $request->jumlah;
+                $barangBaru->save();
+            }
+
+            ActivityLog::create([
+                'user_id' => auth()->id(),
+                'action' => 'update',
+                'model' => 'Barang Masuk',
+                'model_id' => $barangMasuk->id,
+                'description' => 'Mengupdate barang masuk: ' . ($barangBaru->nama ?? 'Unknown') . ' (' . $request->jumlah . ' unit)',
+            ]);
+
+            return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil diupdate');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function destroy(BarangMasuk $barangMasuk)

@@ -15,24 +15,24 @@
                 <input type="hidden" name="_method" value="PUT">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-group">
-                        <label for="edit_nama_supplier" class="form-label">Nama Supplier</label>
+                        <label for="edit_nama_supplier" class="form-label">Supplier Name</label>
                         <input type="text" name="nama" id="edit_nama_supplier" class="form-input" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_kontak_supplier" class="form-label">Kontak</label>
+                        <label for="edit_kontak_supplier" class="form-label">Contact</label>
                         <input type="text" name="kontak" id="edit_kontak_supplier" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label for="edit_telepon_supplier" class="form-label">Telepon</label>
+                        <label for="edit_telepon_supplier" class="form-label">Phone</label>
                         <input type="text" name="telepon" id="edit_telepon_supplier" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label for="edit_alamat_supplier" class="form-label">Alamat</label>
+                        <label for="edit_alamat_supplier" class="form-label">Address</label>
                         <input type="text" name="alamat" id="edit_alamat_supplier" class="form-input">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="closeModal('modal-supplier-edit')" class="btn btn-secondary">Batal</button>
+                    <button type="button" onclick="closeModal('modal-supplier-edit')" class="btn btn-secondary">Cancel</button>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>

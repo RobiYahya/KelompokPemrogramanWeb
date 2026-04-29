@@ -12,7 +12,7 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $barang = Barang::with(['kategori', 'supplier'])->get();
+        $barang = Barang::with(['kategori', 'supplier'])->paginate(10);
         $kategori = Kategori::all();
         $supplier = Supplier::all();
         return view('barang.index', compact('barang', 'kategori', 'supplier'));

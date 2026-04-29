@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Barang Masuk - SIGURA')
+@section('title', 'Incoming Items - SIGURA')
 
 @section('sidebar')
     @include('components.sidebar')
@@ -9,12 +9,12 @@
 @section('content')
     <div class="card-header">
         <div>
-            <h1 class="card-title">Barang Masuk</h1>
-            <p class="card-subtitle">Riwayat barang masuk</p>
+            <h1 class="card-title">Incoming Items</h1>
+            <p class="card-subtitle">Incoming items history</p>
         </div>
         <div class="mt-4 sm:mt-0">
             @if(auth()->user()->role == 'admin')
-            <button onclick="openModal('modal-barang-masuk')" class="btn btn-primary">+ Barang Masuk</button>
+            <button onclick="openModal('modal-barang-masuk')" class="btn btn-primary">+ Incoming</button>
             @endif
         </div>
     </div>
@@ -36,12 +36,12 @@
             <table class="table">
                 <thead class="table-header">
                     <tr>
-                        <th class="table-header-cell">ID Barang</th>
-                        <th class="table-header-cell">Barang</th>
-                        <th class="table-header-cell">Jumlah</th>
-                        <th class="table-header-cell">Tanggal</th>
-                        <th class="table-header-cell">Keterangan</th>
-                        <th class="table-header-cell">Aksi</th>
+                        <th class="table-header-cell">Item ID</th>
+                        <th class="table-header-cell">Item</th>
+                        <th class="table-header-cell">Quantity</th>
+                        <th class="table-header-cell">Date</th>
+                        <th class="table-header-cell">Description</th>
+                        <th class="table-header-cell">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,11 +54,14 @@
                         <td class="table-cell-muted">{{ $item->keterangan ?? '-' }}</td>
                         <td class="table-cell">
                             @if(auth()->user()->role == 'admin')
-                            <form action="{{ route('barang_masuk.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Apakah Anda yakin?')">
-                                @csrf
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                            </form>
+                            <div class="action-buttons">
+                                <button onclick="openEditModalMasuk({{ $item->id }}, {{ $item->barang_id }}, {{ $item->jumlah }}, '{{ $item->tanggal }}', '{{ addslashes($item->keterangan ?? '') }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <form action="{{ route('barang_masuk.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
                             @else
                             <span class="text-gray-400">-</span>
                             @endif
@@ -66,13 +69,19 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="empty-state">Belum ada data barang masuk</td>
+                        <td colspan="6" class="empty-state">No incoming items data yet</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $barangMasuk->links() }}
+    </div>
 @endsection
 
 @include('components.modal_barang_masuk', ['barang' => $barang])
+@include('components.modal_edit_barang_masuk', ['barang' => $barang])

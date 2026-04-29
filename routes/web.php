@@ -56,6 +56,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/barang-masuk/create', [BarangMasukController::class, 'create'])->name('barang_masuk.create');
         Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang_masuk.store');
+        Route::get('/barang-masuk/{barangMasuk}/edit', [BarangMasukController::class, 'edit'])->name('barang_masuk.edit');
+        Route::put('/barang-masuk/{barangMasuk}', [BarangMasukController::class, 'update'])->name('barang_masuk.update');
         Route::delete('/barang-masuk/{barangMasuk}', [BarangMasukController::class, 'destroy'])->name('barang_masuk.destroy');
     });
 
@@ -64,6 +66,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/barang-keluar/create', [BarangKeluarController::class, 'create'])->name('barang_keluar.create');
         Route::post('/barang-keluar', [BarangKeluarController::class, 'store'])->name('barang_keluar.store');
+        Route::get('/barang-keluar/{barangKeluar}/edit', [BarangKeluarController::class, 'edit'])->name('barang_keluar.edit');
+        Route::put('/barang-keluar/{barangKeluar}', [BarangKeluarController::class, 'update'])->name('barang_keluar.update');
         Route::delete('/barang-keluar/{barangKeluar}', [BarangKeluarController::class, 'destroy'])->name('barang_keluar.destroy');
     });
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - SIGURA')
+@section('title', 'Dashboard - MAGURA')
 
 @section('sidebar')
     @include('components.sidebar')
@@ -10,13 +10,13 @@
     <div class="card-header">
         <div>
             <h1 class="card-title">Dashboard</h1>
-            <p class="card-subtitle">Selamat datang, {{ auth()->user()->name }} ({{ auth()->user()->role === 'admin' ? 'Admin' : 'Manajer' }})</p>
+            <p class="card-subtitle">Welcome, {{ auth()->user()->name }} ({{ auth()->user()->role === 'admin' ? 'Admin' : 'Manager' }})</p>
         </div>
     </div>
 
     @if(auth()->user()->role === 'manager')
     <div class="alert alert-warning">
-        <strong>Mode View-Only:</strong> Sebagai Manajer, Anda hanya dapat melihat data tanpa dapat melakukan perubahan.
+        <strong>View-Only Mode:</strong> As a Manager, you can only view data without making changes.
     </div>
     @endif
 
@@ -26,7 +26,7 @@
         <div class="card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-500 text-sm">Barang Masuk Hari Ini</p>
+                    <p class="text-gray-500 text-sm">Incoming Items Today</p>
                     <p class="text-3xl font-bold text-gray-800">{{ $barangMasukHariIni }}</p>
                 </div>
                 <div class="bg-green-100 p-3 rounded-full">
@@ -41,7 +41,7 @@
         <div class="card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-500 text-sm">Barang Keluar Hari Ini</p>
+                    <p class="text-gray-500 text-sm">Outgoing Items Today</p>
                     <p class="text-3xl font-bold text-gray-800">{{ $barangKeluarHariIni }}</p>
                 </div>
                 <div class="bg-red-100 p-3 rounded-full">
@@ -56,7 +56,7 @@
         <div class="card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-500 text-sm">Total Stok</p>
+                    <p class="text-gray-500 text-sm">Total Stock</p>
                     <p class="text-3xl font-bold text-gray-800">{{ $totalStok }}</p>
                 </div>
                 <div class="bg-blue-100 p-3 rounded-full">
@@ -71,7 +71,7 @@
         <div class="card">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-500 text-sm">Total Kategori</p>
+                    <p class="text-gray-500 text-sm">Total Categories</p>
                     <p class="text-3xl font-bold text-gray-800">{{ $totalKategori }}</p>
                 </div>
                 <div class="bg-purple-100 p-3 rounded-full">
@@ -87,7 +87,7 @@
     <div class="card mb-8">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-gray-500 text-sm">Total Supplier</p>
+                <p class="text-gray-500 text-sm">Total Suppliers</p>
                 <p class="text-3xl font-bold text-gray-800">{{ $totalSupplier }}</p>
             </div>
             <div class="bg-yellow-100 p-3 rounded-full">
@@ -100,16 +100,16 @@
 
     <!-- Barang Stok Minimum Table -->
     <div class="card">
-        <h2 class="text-xl font-bold text-gray-800 mb-4">Barang Stok Minimum</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Low Stock Items</h2>
         <div class="overflow-x-auto">
             <table class="table">
                 <thead class="table-header">
                     <tr>
-                        <th class="table-header-cell">ID Barang</th>
-                        <th class="table-header-cell">Nama Barang</th>
-                        <th class="table-header-cell">Kategori</th>
+                        <th class="table-header-cell">Item ID</th>
+                        <th class="table-header-cell">Item Name</th>
+                        <th class="table-header-cell">Category</th>
                         <th class="table-header-cell">Supplier</th>
-                        <th class="table-header-cell">Stok</th>
+                        <th class="table-header-cell">Stock</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,7 +125,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="empty-state">Tidak ada barang dengan stok minimum</td>
+                        <td colspan="5" class="empty-state">No low stock items</td>
                     </tr>
                     @endforelse
                 </tbody>

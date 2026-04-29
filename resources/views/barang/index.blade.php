@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Barang - SIGURA')
+@section('title', 'Items - SIGURA')
 
 @section('sidebar')
     @include('components.sidebar')
@@ -9,12 +9,12 @@
 @section('content')
     <div class="card-header">
         <div>
-            <h1 class="card-title">Data Barang</h1>
-            <p class="card-subtitle">Kelola data barang</p>
+            <h1 class="card-title">Items</h1>
+            <p class="card-subtitle">Manage item data</p>
         </div>
         <div class="mt-4 sm:mt-0">
             @if(auth()->user()->role == 'admin')
-            <button onclick="openModal('modal-barang')" class="btn btn-primary">+ Tambah Barang</button>
+            <button onclick="openModal('modal-barang')" class="btn btn-primary">+ Add Item</button>
             @endif
         </div>
     </div>
@@ -31,13 +31,13 @@
                 <thead class="table-header">
                     <tr>
                         <th class="table-header-cell">ID</th>
-                        <th class="table-header-cell">Nama</th>
-                        <th class="table-header-cell">Kategori</th>
+                        <th class="table-header-cell">Name</th>
+                        <th class="table-header-cell">Category</th>
                         <th class="table-header-cell">Supplier</th>
-                        <th class="table-header-cell">Stok</th>
-                        <th class="table-header-cell">Min Stok</th>
-                        <th class="table-header-cell">Harga Beli</th>
-                        <th class="table-header-cell">Aksi</th>
+                        <th class="table-header-cell">Stock</th>
+                        <th class="table-header-cell">Min Stock</th>
+                        <th class="table-header-cell">Purchase Price</th>
+                        <th class="table-header-cell">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,10 +54,10 @@
                             @if(auth()->user()->role == 'admin')
                             <div class="action-buttons">
                                 <button onclick="openEditBarangModal({{ $item->id }}, '{{ $item->nama }}', {{ $item->kategori_id }}, {{ $item->supplier_id }}, {{ $item->stok }}, {{ $item->minimum_stok }}, {{ $item->harga_beli }})" class="btn btn-sm btn-primary">Edit</button>
-                                <form action="{{ route('barang.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Apakah Anda yakin?')">
+                                <form action="{{ route('barang.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
                             </div>
                             @else
@@ -67,12 +67,17 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="empty-state">Belum ada data barang</td>
+                        <td colspan="8" class="empty-state">No item data yet</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $barang->links() }}
     </div>
 @endsection
 
