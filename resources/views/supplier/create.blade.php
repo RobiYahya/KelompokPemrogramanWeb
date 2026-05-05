@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tambah Supplier - SIGURA</title>
+    <title>Tambah Supplier - Magura</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
         <!-- Sidebar -->
         <div class="w-64 bg-purple-600 min-h-screen p-6 hidden lg:block">
             <div class="mb-8">
-                <h1 class="text-2xl font-bold text-white">SIGURA</h1>
+                <h1 class="text-2xl font-bold text-white">Magura</h1>
                 <p class="text-purple-200 text-sm">Sistem Gudang</p>
             </div>
             <nav class="space-y-2">

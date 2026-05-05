@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Item - SIGURA</title>
+    <title>Add Item - Magura</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>*{font-family:'Poppins',sans-serif}</style>
@@ -11,7 +11,7 @@
 <body class="min-h-screen bg-gray-100">
     <div class="flex">
         <div class="w-64 bg-purple-600 min-h-screen p-6 hidden lg:block">
-            <div class="mb-8"><h1 class="text-2xl font-bold text-white">SIGURA</h1><p class="text-purple-200 text-sm">Warehouse System</p></div>
+            <div class="mb-8"><h1 class="text-2xl font-bold text-white">Magura</h1><p class="text-purple-200 text-sm">Warehouse System</p></div>
             <nav class="space-y-2">
                 <a href="{{ route('dashboard') }}" class="flex items-center text-purple-100 hover:bg-purple-700 px-4 py-3 rounded-lg transition"><svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>Dashboard</a>
                 <a href="{{ route('barang.index') }}" class="flex items-center text-white bg-purple-700 px-4 py-3 rounded-lg"><svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>Items</a>

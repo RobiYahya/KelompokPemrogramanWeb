@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Suppliers - SIGURA')
+@section('title', 'Suppliers - Magura')
 
 @section('sidebar')
     @include('components.sidebar')
