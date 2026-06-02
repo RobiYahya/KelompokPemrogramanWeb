@@ -14,8 +14,8 @@
                 @csrf
                 <div class="form-group">
                     <label for="nama_kategori" class="form-label">Category Name</label>
-                    <input type="text" name="nama" id="nama_kategori" class="form-input" placeholder="Enter category name" required>
-                    @error('nama')
+                    <input type="text" name="nama_kategori" id="nama_kategori" class="form-input" placeholder="Enter category name" required>
+                    @error('nama_kategori')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

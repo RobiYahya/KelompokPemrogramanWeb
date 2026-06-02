@@ -15,7 +15,7 @@
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="edit_nama_kategori" class="form-label">Category Name</label>
-                    <input type="text" name="nama" id="edit_nama_kategori" class="form-input" required>
+                    <input type="text" name="nama_kategori" id="edit_nama_kategori" class="form-input" required>
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="closeModal('modal-kategori-edit')" class="btn btn-secondary">Cancel</button>

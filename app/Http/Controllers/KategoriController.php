@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
@@ -14,69 +13,59 @@ class KategoriController extends Controller
         return view('kategori.index', compact('kategori'));
     }
 
-    public function create()
-    {
-        return view('kategori.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_kategori' => 'required|string|max:50',
         ]);
 
-        $kategori = Kategori::create([
-            'nama' => $request->nama,
-        ]);
+        $namaKategori = trim($request->nama_kategori);
+        $exists = Kategori::whereRaw('LOWER(nama_kategori) = ?', [strtolower($namaKategori)])->exists();
+        if ($exists) {
+            return redirect()->back()
+                ->withErrors(['nama_kategori' => 'This category already exists.'])
+                ->with('error_pop', 'Category "' . $namaKategori . '" already exists in the system.')
+                ->withInput();
+        }
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'create',
-            'model' => 'Kategori',
-            'model_id' => $kategori->id,
-            'description' => 'Menambahkan kategori: ' . $kategori->nama,
-        ]);
+        $kategori = Kategori::create(['nama_kategori' => $namaKategori]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
-    }
+        ActivityLog::log('create', 'Added category: ' . $kategori->nama_kategori, $kategori->id_kategori);
 
-    public function edit(Kategori $kategori)
-    {
-        return view('kategori.edit', compact('kategori'));
+        return redirect()->route('kategori.index')->with('success', 'Category added successfully');
     }
 
     public function update(Request $request, Kategori $kategori)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_kategori' => 'required|string|max:50',
         ]);
 
-        $kategori->update($request->all());
+        $namaKategori = trim($request->nama_kategori);
+        $exists = Kategori::whereRaw('LOWER(nama_kategori) = ?', [strtolower($namaKategori)])
+            ->where('id_kategori', '!=', $kategori->id_kategori)
+            ->exists();
+        if ($exists) {
+            return redirect()->back()
+                ->withErrors(['nama_kategori' => 'This category already exists.'])
+                ->with('error_pop', 'Category "' . $namaKategori . '" already exists in the system.')
+                ->withInput();
+        }
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'update',
-            'model' => 'Kategori',
-            'model_id' => $kategori->id,
-            'description' => 'Mengubah kategori: ' . $kategori->nama,
-        ]);
+        $kategori->update(['nama_kategori' => $namaKategori]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui');
+        ActivityLog::log('update', 'Updated category: ' . $kategori->nama_kategori, $kategori->id_kategori);
+
+        return redirect()->route('kategori.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy(Kategori $kategori)
     {
-        $nama = $kategori->nama;
+        $nama = $kategori->nama_kategori;
         $kategori->delete();
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'delete',
-            'model' => 'Kategori',
-            'model_id' => $kategori->id,
-            'description' => 'Menghapus kategori: ' . $nama,
-        ]);
+        ActivityLog::log('delete', 'Deleted category: ' . $nama);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
+        return redirect()->route('kategori.index')->with('success', 'Category deleted successfully');
     }
 }

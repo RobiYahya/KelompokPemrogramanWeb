@@ -6,22 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
 {
-    protected $fillable = ['nama'];
     protected $table = 'kategori';
+    protected $primaryKey = 'id_kategori';
+    protected $fillable = ['nama_kategori'];
 
     protected $appends = ['formatted_id'];
 
     public function getFormattedIdAttribute()
     {
-        $prefix = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $this->nama), 0, 3));
+        $prefix = strtolower(substr(preg_replace('/[^a-zA-Z]/', '', $this->nama_kategori), 0, 3));
         if (strlen($prefix) < 3) {
-            $prefix = str_pad($prefix, 3, 'X');
+            $prefix = str_pad($prefix, 3, 'x');
         }
-        return $prefix . str_pad($this->id, 2, '0', STR_PAD_LEFT);
+        return $prefix . str_pad($this->id_kategori, 2, '0', STR_PAD_LEFT);
     }
 
     public function barang()
     {
-        return $this->hasMany(Barang::class);
+        return $this->hasMany(Barang::class, 'id_kategori', 'id_kategori');
     }
 }
