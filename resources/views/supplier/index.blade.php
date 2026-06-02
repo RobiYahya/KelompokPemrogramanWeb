@@ -30,27 +30,27 @@
             <table class="table">
                 <thead class="table-header">
                     <tr>
-                        <th class="table-header-cell">ID</th>
-                        <th class="table-header-cell">Name</th>
-                        <th class="table-header-cell">Contact</th>
-                        <th class="table-header-cell">Phone</th>
+                        <th class="table-header-cell">Supplier ID</th>
+                        <th class="table-header-cell">Supplier Name</th>
+                        <th class="table-header-cell">Contact Person</th>
+                        <th class="table-header-cell">Phone Number</th>
                         <th class="table-header-cell">Address</th>
-                        <th class="table-header-cell">Action</th>
+                        <th class="table-header-cell">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($supplier as $index => $item)
                     <tr class="table-body-row">
                         <td class="table-cell-mono">{{ $item->formatted_id }}</td>
-                        <td class="table-cell">{{ $item->nama }}</td>
+                        <td class="table-cell">{{ $item->nama_supplier }}</td>
                         <td class="table-cell-muted">{{ $item->kontak ?? '-' }}</td>
-                        <td class="table-cell-muted">{{ $item->telepon ?? '-' }}</td>
+                        <td class="table-cell-muted">{{ $item->no_telp ?? '-' }}</td>
                         <td class="table-cell-muted">{{ $item->alamat ?? '-' }}</td>
                         <td class="table-cell">
                             @if(auth()->user()->role == 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditSupplierModal({{ $item->id }}, '{{ $item->nama }}', '{{ $item->kontak ?? '' }}', '{{ $item->telepon ?? '' }}', '{{ $item->alamat ?? '' }}')" class="btn btn-sm btn-primary">Edit</button>
-                                <form action="{{ route('supplier.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
+                                <button onclick="openEditSupplierModal({{ $item->id_supplier }}, '{{ addslashes($item->nama_supplier) }}', '{{ addslashes($item->kontak ?? '') }}', '{{ addslashes($item->no_telp ?? '') }}', '{{ addslashes($item->alamat ?? '') }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <form action="{{ route('supplier.destroy', $item->id_supplier) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
