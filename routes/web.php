@@ -9,6 +9,8 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -24,9 +26,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Kategori Routes
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
     Route::middleware(['admin'])->group(function () {
-        Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
         Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
-        Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
         Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
         Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
     });
@@ -34,9 +34,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Supplier Routes
     Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
     Route::middleware(['admin'])->group(function () {
-        Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
         Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
-        Route::get('/supplier/{supplier}/edit', [SupplierController::class, 'edit'])->name('supplier.edit');
         Route::put('/supplier/{supplier}', [SupplierController::class, 'update'])->name('supplier.update');
         Route::delete('/supplier/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
     });
@@ -44,9 +42,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Barang Routes
     Route::get('/barang', [BarangController::class, 'index'])->name('barang.index');
     Route::middleware(['admin'])->group(function () {
-        Route::get('/barang/create', [BarangController::class, 'create'])->name('barang.create');
         Route::post('/barang', [BarangController::class, 'store'])->name('barang.store');
-        Route::get('/barang/{barang}/edit', [BarangController::class, 'edit'])->name('barang.edit');
         Route::put('/barang/{barang}', [BarangController::class, 'update'])->name('barang.update');
         Route::delete('/barang/{barang}', [BarangController::class, 'destroy'])->name('barang.destroy');
     });
@@ -54,9 +50,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Barang Masuk Routes
     Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang_masuk.index');
     Route::middleware(['admin'])->group(function () {
-        Route::get('/barang-masuk/create', [BarangMasukController::class, 'create'])->name('barang_masuk.create');
         Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang_masuk.store');
-        Route::get('/barang-masuk/{barangMasuk}/edit', [BarangMasukController::class, 'edit'])->name('barang_masuk.edit');
         Route::put('/barang-masuk/{barangMasuk}', [BarangMasukController::class, 'update'])->name('barang_masuk.update');
         Route::delete('/barang-masuk/{barangMasuk}', [BarangMasukController::class, 'destroy'])->name('barang_masuk.destroy');
     });
@@ -64,13 +58,18 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Barang Keluar Routes
     Route::get('/barang-keluar', [BarangKeluarController::class, 'index'])->name('barang_keluar.index');
     Route::middleware(['admin'])->group(function () {
-        Route::get('/barang-keluar/create', [BarangKeluarController::class, 'create'])->name('barang_keluar.create');
         Route::post('/barang-keluar', [BarangKeluarController::class, 'store'])->name('barang_keluar.store');
-        Route::get('/barang-keluar/{barangKeluar}/edit', [BarangKeluarController::class, 'edit'])->name('barang_keluar.edit');
         Route::put('/barang-keluar/{barangKeluar}', [BarangKeluarController::class, 'update'])->name('barang_keluar.update');
         Route::delete('/barang-keluar/{barangKeluar}', [BarangKeluarController::class, 'destroy'])->name('barang_keluar.destroy');
     });
 
     // Activity Log Routes
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity_logs.index');
-});
+
+    // User Management Routes (Super Admin only)
+    Route::middleware(['super_admin'])->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });

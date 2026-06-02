@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Outgoing Items - Magura')
+@section('title', 'Incoming Items - Magura')
 
 @section('sidebar')
     @include('components.sidebar')
@@ -9,12 +9,12 @@
 @section('content')
     <div class="card-header">
         <div>
-            <h1 class="card-title">Outgoing Items</h1>
-            <p class="card-subtitle">Outgoing items history</p>
+            <h1 class="card-title">Incoming Items</h1>
+            <p class="card-subtitle">Incoming items history</p>
         </div>
         <div class="mt-4 sm:mt-0">
             @if(auth()->user()->role == 'admin')
-            <button onclick="openModal('modal-barang-keluar')" class="btn btn-primary">+ Outgoing</button>
+            <button onclick="openModal('modal-barang-masuk')" class="btn btn-primary">+ Incoming</button>
             @endif
         </div>
     </div>
@@ -36,27 +36,29 @@
             <table class="table">
                 <thead class="table-header">
                     <tr>
+                        <th class="table-header-cell">Transaction ID</th>
                         <th class="table-header-cell">Item ID</th>
                         <th class="table-header-cell">Item</th>
                         <th class="table-header-cell">Quantity</th>
                         <th class="table-header-cell">Date</th>
                         <th class="table-header-cell">Description</th>
-                        <th class="table-header-cell">Action</th>
+                        <th class="table-header-cell">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($barangKeluar as $index => $item)
+                    @forelse($barangMasuk as $index => $item)
                     <tr class="table-body-row">
+                        <td class="table-cell-mono">{{ $item->formatted_id }}</td>
                         <td class="table-cell-mono">{{ $item->barang->formatted_id ?? '-' }}</td>
-                        <td class="table-cell">{{ $item->barang->nama ?? '-' }}</td>
+                        <td class="table-cell">{{ $item->barang->nama_barang ?? '-' }}</td>
                         <td class="table-cell">{{ $item->jumlah }}</td>
                         <td class="table-cell-muted">{{ $item->tanggal }}</td>
-                        <td class="table-cell-muted">{{ $item->keterangan ?? '-' }}</td>
+                        <td class="table-cell-muted">{{ $item->deskripsi ?? '-' }}</td>
                         <td class="table-cell">
                             @if(auth()->user()->role == 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditModalKeluar({{ $item->id }}, {{ $item->barang_id }}, {{ $item->jumlah }}, '{{ $item->tanggal }}', '{{ addslashes($item->keterangan ?? '') }}')" class="btn btn-sm btn-primary">Edit</button>
-                                <form action="{{ route('barang_keluar.destroy', $item->id) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
+                                <button onclick="openEditModalMasuk({{ $item->id_masuk }}, {{ $item->id_barang }}, {{ $item->jumlah }}, '{{ $item->tanggal }}', '{{ addslashes($item->deskripsi ?? '') }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <form action="{{ route('barang_masuk.destroy', $item->id_masuk) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -69,7 +71,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="empty-state">No outgoing items data yet</td>
+                        <td colspan="7" class="empty-state">No incoming items data yet</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -79,9 +81,9 @@
 
     <!-- Pagination -->
     <div class="mt-4">
-        {{ $barangKeluar->links() }}
+        {{ $barangMasuk->links() }}
     </div>
 @endsection
 
-@include('components.modal_barang_keluar', ['barang' => $barang])
-@include('components.modal_edit_barang_keluar', ['barang' => $barang])
+<x-stock-transaction-modal type="masuk" mode="create" :barang="$barang" />
+<x-stock-transaction-modal type="masuk" mode="edit" :barang="$barang" />

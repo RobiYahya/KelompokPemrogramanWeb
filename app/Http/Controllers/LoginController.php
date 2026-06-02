@@ -25,7 +25,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'id_pegawai' => 'ID Pegawai atau password salah.',
+            'id_pegawai' => 'Invalid Employee ID or password.',
         ])->withInput($request->only('id_pegawai'));
     }
 

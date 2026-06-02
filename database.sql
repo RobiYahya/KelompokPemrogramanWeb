@@ -1,175 +1,150 @@
--- Database: namaprojectweb
--- Generated for MySQL Import
+  -- ============================================================
+  -- Buat & pilih database secara otomatis
+  -- ============================================================
+  CREATE DATABASE IF NOT EXISTS `magura_db`
+    DEFAULT CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 
-DROP DATABASE IF EXISTS `namaprojectweb`;
-CREATE DATABASE `namaprojectweb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `namaprojectweb`;
+  USE `magura_db`;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+07:00";
+  SET FOREIGN_KEY_CHECKS = 0;
 
--- --------------------------------------------------------
+  -- Tabel aplikasi
+  DROP TABLE IF EXISTS `histori_aktivitas`;
+  DROP TABLE IF EXISTS `barang_masuk`;
+  DROP TABLE IF EXISTS `barang_keluar`;
+  DROP TABLE IF EXISTS `barang`;
+  DROP TABLE IF EXISTS `supplier`;
+  DROP TABLE IF EXISTS `kategori`;
+  DROP TABLE IF EXISTS `users`;
 
---
--- Table structure for table `users`
---
+  SET FOREIGN_KEY_CHECKS = 1;
 
-CREATE TABLE `users` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `id_pegawai` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT 'admin',
-  `password` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`),
-  UNIQUE KEY `users_id_pegawai_unique` (`id_pegawai`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  -- --------------------------------------------------------
+  -- 1. Tabel Users
+  -- --------------------------------------------------------
+  CREATE TABLE `users` (
+    `id_user` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `nama` varchar(50) NOT NULL,
+    `email` varchar(50) NOT NULL,
+    `email_verified_at` timestamp NULL DEFAULT NULL,
+    `id_pegawai` varchar(50) DEFAULT NULL,
+    `role` varchar(50) DEFAULT 'admin',
+    `password` varchar(255) NOT NULL,
+    `remember_token` varchar(100) DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_user`),
+    UNIQUE KEY `users_email_unique` (`email`),
+    UNIQUE KEY `users_id_pegawai_unique` (`id_pegawai`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+  -- --------------------------------------------------------
+  -- 2. Tabel Kategori
+  -- --------------------------------------------------------
+  CREATE TABLE `kategori` (
+    `id_kategori` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `nama_kategori` varchar(50) NOT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_kategori`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
+  -- --------------------------------------------------------
+  -- 3. Tabel Supplier
+  -- --------------------------------------------------------
+  CREATE TABLE `supplier` (
+    `id_supplier` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `nama_supplier` varchar(50) NOT NULL,
+    `kontak` varchar(50) DEFAULT NULL,
+    `no_telp` varchar(50) DEFAULT NULL,
+    `alamat` varchar(50) DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_supplier`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `id_pegawai`, `role`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Shofi', 'shofi@Magura.com', NULL, 'ADM001', 'admin', '$2y$12$c3NQ9JOXht9Gyk8YjPkeJOqPPemJyCT/ouLaKpsXraEARM8NPtDCK', NULL, NOW(), NOW()),
-(2, 'Cahya', 'cahya@Magura.com', NULL, 'ADM002', 'admin', '$2y$12$c3NQ9JOXht9Gyk8YjPkeJOqPPemJyCT/ouLaKpsXraEARM8NPtDCK', NULL, NOW(), NOW()),
-(3, 'Robi', 'robi@Magura.com', NULL, 'MGR001', 'manager', '$2y$12$c3NQ9JOXht9Gyk8YjPkeJOqPPemJyCT/ouLaKpsXraEARM8NPtDCK', NULL, NOW(), NOW());
+  -- --------------------------------------------------------
+  -- 4. Tabel Barang
+  -- --------------------------------------------------------
+  CREATE TABLE `barang` (
+    `id_barang` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `nama_barang` varchar(50) NOT NULL,
+    `id_kategori` bigint unsigned DEFAULT NULL,
+    `id_supplier` bigint unsigned DEFAULT NULL,
+    `stok` int NOT NULL DEFAULT 0,
+    `min_stok` int NOT NULL DEFAULT 10,
+    `harga` decimal(10,2) NOT NULL DEFAULT 0.00,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_barang`),
+    KEY `barang_id_kategori_foreign` (`id_kategori`),
+    KEY `barang_id_supplier_foreign` (`id_supplier`),
+    CONSTRAINT `barang_id_kategori_foreign` FOREIGN KEY (`id_kategori`) REFERENCES `kategori` (`id_kategori`) ON DELETE SET NULL,
+    CONSTRAINT `barang_id_supplier_foreign` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`) ON DELETE SET NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+  -- --------------------------------------------------------
+  -- 5. Tabel Barang Masuk
+  -- --------------------------------------------------------
+  CREATE TABLE `barang_masuk` (
+    `id_masuk` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `id_barang` bigint unsigned NOT NULL,
+    `id_user` bigint unsigned NOT NULL,
+    `jumlah` int NOT NULL,
+    `tanggal` date NOT NULL,
+    `deskripsi` varchar(50) DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_masuk`),
+    KEY `barang_masuk_id_barang_foreign` (`id_barang`),
+    KEY `barang_masuk_id_user_foreign` (`id_user`),
+    CONSTRAINT `barang_masuk_id_barang_foreign` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE CASCADE,
+    CONSTRAINT `barang_masuk_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `sessions`
---
+  -- --------------------------------------------------------
+  -- 6. Tabel Barang Keluar
+  -- --------------------------------------------------------
+  CREATE TABLE `barang_keluar` (
+    `id_keluar` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `id_barang` bigint unsigned NOT NULL,
+    `id_user` bigint unsigned NOT NULL,
+    `jumlah` int NOT NULL,
+    `tanggal` date NOT NULL,
+    `deskripsi` varchar(50) DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_keluar`),
+    KEY `barang_keluar_id_barang_foreign` (`id_barang`),
+    KEY `barang_keluar_id_user_foreign` (`id_user`),
+    CONSTRAINT `barang_keluar_id_barang_foreign` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE CASCADE,
+    CONSTRAINT `barang_keluar_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `sessions` (
-  `id` varchar(255) NOT NULL,
-  `user_id` bigint unsigned DEFAULT NULL,
-  `ip_address` varchar(45) DEFAULT NULL,
-  `user_agent` text,
-  `payload` longtext NOT NULL,
-  `last_activity` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `sessions_user_id_index` (`user_id`),
-  KEY `sessions_last_activity_index` (`last_activity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  -- --------------------------------------------------------
+  -- 7. Tabel Histori Aktivitas
+  -- --------------------------------------------------------
+  CREATE TABLE `histori_aktivitas` (
+    `id_histori` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `id_user` bigint unsigned NOT NULL,
+    `aksi` varchar(50) NOT NULL,
+    `id_kategori` bigint unsigned DEFAULT NULL,
+    `nama_barang` varchar(50) DEFAULT NULL,
+    `deskripsi` text NOT NULL,
+    `tanggal` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id_histori`),
+    KEY `histori_aktivitas_id_user_foreign` (`id_user`),
+    CONSTRAINT `histori_aktivitas_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `kategori`
---
-
-CREATE TABLE `kategori` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `supplier`
---
-
-CREATE TABLE `supplier` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) NOT NULL,
-  `kontak` varchar(255) DEFAULT NULL,
-  `telepon` varchar(255) DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `barang`
---
-
-CREATE TABLE `barang` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) NOT NULL,
-  `kategori_id` bigint unsigned NOT NULL,
-  `supplier_id` bigint unsigned NOT NULL,
-  `stok` int NOT NULL DEFAULT 0,
-  `minimum_stok` int NOT NULL DEFAULT 10,
-  `harga_beli` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `barang_kategori_id_foreign` (`kategori_id`),
-  KEY `barang_supplier_id_foreign` (`supplier_id`),
-  CONSTRAINT `barang_kategori_id_foreign` FOREIGN KEY (`kategori_id`) REFERENCES `kategori` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `barang_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `barang_masuk`
---
-
-CREATE TABLE `barang_masuk` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `barang_id` bigint unsigned NOT NULL,
-  `jumlah` int NOT NULL,
-  `tanggal` date NOT NULL,
-  `keterangan` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `barang_masuk_barang_id_foreign` (`barang_id`),
-  CONSTRAINT `barang_masuk_barang_id_foreign` FOREIGN KEY (`barang_id`) REFERENCES `barang` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `barang_keluar`
---
-
-CREATE TABLE `barang_keluar` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `barang_id` bigint unsigned NOT NULL,
-  `jumlah` int NOT NULL,
-  `tanggal` date NOT NULL,
-  `keterangan` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `barang_keluar_barang_id_foreign` (`barang_id`),
-  CONSTRAINT `barang_keluar_barang_id_foreign` FOREIGN KEY (`barang_id`) REFERENCES `barang` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `activity_logs`
---
-
-CREATE TABLE `activity_logs` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint unsigned NOT NULL,
-  `action` varchar(255) NOT NULL,
-  `model` varchar(255) NOT NULL,
-  `model_id` bigint unsigned DEFAULT NULL,
-  `description` text NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `activity_logs_user_id_foreign` (`user_id`),
-  CONSTRAINT `activity_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-COMMIT;
+  -- --------------------------------------------------------
+  -- SEED DATA AWAL
+  -- --------------------------------------------------------
+  INSERT INTO `users` (`id_user`, `nama`, `email`, `email_verified_at`, `id_pegawai`, `role`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+  (1, 'Super Admin', 'superadmin@Magura.com', NULL, 'SUP001', 'super_admin', '$2y$12$tuVWe2JpPmhuxct6SYiGN.dJQceIUoLJhK5ohA5QtiKlVq9epaRoa', NULL, NOW(), NOW()),
+  (2, 'Shofi', 'shofi@Magura.com', NULL, 'ADM001', 'admin', '$2y$12$tuVWe2JpPmhuxct6SYiGN.dJQceIUoLJhK5ohA5QtiKlVq9epaRoa', NULL, NOW(), NOW()),
+  (3, 'Cahya', 'cahya@Magura.com', NULL, 'ADM002', 'admin', '$2y$12$tuVWe2JpPmhuxct6SYiGN.dJQceIUoLJhK5ohA5QtiKlVq9epaRoa', NULL, NOW(), NOW()),
+  (4, 'Robi', 'robi@Magura.com', NULL, 'MGR001', 'manager', '$2y$12$tuVWe2JpPmhuxct6SYiGN.dJQceIUoLJhK5ohA5QtiKlVq9epaRoa', NULL, NOW(), NOW());

@@ -41,4 +41,4 @@
         </svg>
         Activity Logs
     </a>
-</nav>
+    @if(auth()->user()->role === 'super_admin')

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Models\Barang;
 use App\Models\BarangMasuk;
 use App\Models\BarangKeluar;
@@ -30,8 +30,11 @@ class DashboardController extends Controller
         // Total supplier
         $totalSupplier = Supplier::count();
 
-        // Data barang dengan stok minimum
-        $barangLowStock = Barang::with(['kategori', 'supplier'])->whereColumn('stok', '<=', 'minimum_stok')->get();
+        // Barang dengan stok di bawah atau sama dengan minimum stok
+        // Kolom yang benar adalah 'min_stok' (bukan 'minimum_stok')
+        $barangLowStock = Barang::with(['kategori', 'supplier'])
+            ->whereColumn('stok', '<=', 'min_stok')
+            ->get();
 
         return view('dashboard', compact(
             'barangMasukHariIni',

@@ -9,16 +9,44 @@ class ActivityLog extends Model
 {
     use HasFactory;
 
+    // Sesuai tabel histori_aktivitas di database
+    protected $table = 'histori_aktivitas';
+    protected $primaryKey = 'id_histori';
+
     protected $fillable = [
-        'user_id',
-        'action',
-        'model',
-        'model_id',
-        'description',
+        'id_user',
+        'aksi',
+        'id_kategori',
+        'nama_barang',
+        'deskripsi',
     ];
+
+    // histori_aktivitas is an append-only audit log — no updated_at column
+    const CREATED_AT = 'tanggal';
+    const UPDATED_AT = null;
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
+    }
+
+    public static function log(
+        string $aksi,
+        string $deskripsi,
+        ?int $idKategori = null,
+        ?string $namaBarang = null
+    ): void {
+        static::create([
+            'id_user'     => auth()->id(),
+            'aksi'        => $aksi,
+            'id_kategori' => $idKategori,
+            'nama_barang' => $namaBarang,
+            'deskripsi'   => $deskripsi,
+        ]);
     }
 }

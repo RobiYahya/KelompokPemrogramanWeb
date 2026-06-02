@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\BarangMasuk;
-use App\Models\ActivityLog;
+use App\Services\StockTransactionService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BarangMasukController extends Controller
 {
+    public function __construct(
+        private StockTransactionService $service
+    ) {}
+
     public function index()
     {
         $barangMasuk = BarangMasuk::with('barang')->latest()->paginate(10);
@@ -16,81 +21,46 @@ class BarangMasukController extends Controller
         return view('barang_masuk.index', compact('barangMasuk', 'barang'));
     }
 
-    public function create()
-    {
-        $barang = Barang::all();
-        return view('barang_masuk.create', compact('barang'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'barang_id' => 'required|exists:barang,id',
-            'jumlah' => 'required|integer|min:1',
-            'tanggal' => 'required|date',
-            'keterangan' => 'nullable|string|max:255',
+            'id_barang' => [
+                'required',
+                Rule::exists('barang', 'id_barang')->whereNull('deleted_at'),
+            ],
+            'jumlah'    => 'required|integer|min:1',
+            'tanggal'   => 'required|date',
+            'deskripsi' => 'nullable|string|max:50',
         ]);
 
-        $barangMasuk = BarangMasuk::create($request->all());
-
-        // Update stok barang
-        $barang = Barang::find($request->barang_id);
-        $barang->stok += $request->jumlah;
-        $barang->save();
-
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'barang_masuk',
-            'model' => 'Barang Masuk',
-            'model_id' => $barangMasuk->id,
-            'description' => $request->keterangan ?? 'Menambahkan barang masuk: ' . $barang->nama . ' (' . $request->jumlah . ' unit)',
-        ]);
-
-        return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil dicatat');
-    }
-
-    public function edit(BarangMasuk $barangMasuk)
-    {
-        $barang = Barang::all();
-        return view('barang_masuk.edit', compact('barangMasuk', 'barang'));
+        try {
+            $this->service->store($request);
+            return redirect()->route('barang_masuk.index')->with('success', 'Incoming stock recorded successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function update(Request $request, BarangMasuk $barangMasuk)
     {
+        $validated = $request->validate([
+            'id_barang' => [
+                'required',
+                Rule::exists('barang', 'id_barang')->where(function ($query) use ($barangMasuk, $request) {
+                    if ($request->id_barang == $barangMasuk->id_barang) {
+                        return $query;
+                    }
+                    return $query->whereNull('deleted_at');
+                }),
+            ],
+            'jumlah'    => 'required|integer|min:1',
+            'tanggal'   => 'required|date',
+            'deskripsi' => 'nullable|string|max:50',
+        ]);
+
         try {
-            $validated = $request->validate([
-                'barang_id' => 'required|exists:barang,id',
-                'jumlah' => 'required|integer|min:1',
-                'tanggal' => 'required|date',
-                'keterangan' => 'nullable|string|max:255',
-            ]);
-
-            // Kembalikan stok lama
-            $barangLama = Barang::find($barangMasuk->barang_id);
-            if ($barangLama) {
-                $barangLama->stok -= $barangMasuk->jumlah;
-                $barangLama->save();
-            }
-
-            // Update data
-            $barangMasuk->update($validated);
-
-            // Tambah stok baru
-            $barangBaru = Barang::find($request->barang_id);
-            if ($barangBaru) {
-                $barangBaru->stok += $request->jumlah;
-                $barangBaru->save();
-            }
-
-            ActivityLog::create([
-                'user_id' => auth()->id(),
-                'action' => 'update',
-                'model' => 'Barang Masuk',
-                'model_id' => $barangMasuk->id,
-                'description' => 'Mengupdate barang masuk: ' . ($barangBaru->nama ?? 'Unknown') . ' (' . $request->jumlah . ' unit)',
-            ]);
-
-            return redirect()->route('barang_masuk.index')->with('success', 'Barang masuk berhasil diupdate');
+            $this->service->update($validated, $barangMasuk);
+            return redirect()->route('barang_masuk.index')->with('success', 'Incoming stock updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error: ' . $e->getMessage())->withInput();
         }
@@ -98,20 +68,11 @@ class BarangMasukController extends Controller
 
     public function destroy(BarangMasuk $barangMasuk)
     {
-        // Kurangi stok barang
-        $barang = Barang::find($barangMasuk->barang_id);
-        $barang->stok -= $barangMasuk->jumlah;
-        $barang->save();
-
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'delete',
-            'model' => 'Barang Masuk',
-            'model_id' => $barangMasuk->id,
-            'description' => 'Menghapus barang masuk: ' . $barang->nama,
-        ]);
-
-        $barangMasuk->delete();
-        return redirect()->route('barang_masuk.index')->with('success', 'Data barang masuk berhasil dihapus');
+        try {
+            $this->service->destroy($barangMasuk);
+            return redirect()->route('barang_masuk.index')->with('success', 'Incoming stock record deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }

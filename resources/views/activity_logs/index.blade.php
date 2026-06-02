@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Activity Logs - SIGURA')
+@section('title', 'Activity Logs - Magura')
 
 @section('sidebar')
     @include('components.sidebar')
@@ -30,40 +30,26 @@
                 <tbody>
                     @forelse($activityLogs as $log)
                     <tr class="table-body-row">
-                        <td class="table-cell">{{ $log->created_at->format('d/m/Y H:i') }}</td>
-                        <td class="table-cell">{{ $log->user->name ?? 'Unknown' }}</td>
+                        <td class="table-cell">{{ $log->tanggal ? \Carbon\Carbon::parse($log->tanggal)->format('d/m/Y H:i') : '-' }}</td>
+                        <td class="table-cell">{{ $log->user->nama ?? 'Unknown' }}</td>
                         <td class="table-cell">
-                            @if($log->action == 'create')
+                            @if($log->aksi == 'create')
                                 <span class="badge badge-green">Add</span>
-                            @elseif($log->action == 'update')
+                            @elseif($log->aksi == 'update')
                                 <span class="badge badge-yellow">Edit</span>
-                            @elseif($log->action == 'delete')
+                            @elseif($log->aksi == 'delete')
                                 <span class="badge badge-red">Delete</span>
-                            @elseif($log->action == 'barang_keluar')
+                            @elseif($log->aksi == 'barang_keluar')
                                 <span class="badge badge-blue">Outgoing</span>
-                            @elseif($log->action == 'barang_masuk')
+                            @elseif($log->aksi == 'barang_masuk')
                                 <span class="badge badge-green">Incoming</span>
-                            @endif
-                        </td>
-                        <td class="table-cell">
-                            @if($log->model == 'Barang Masuk' && $log->model_id)
-                                {{ \App\Models\BarangMasuk::find($log->model_id)?->barang->nama ?? '-' }}
-                            @elseif($log->model == 'Barang Keluar' && $log->model_id)
-                                {{ \App\Models\BarangKeluar::find($log->model_id)?->barang->nama ?? '-' }}
                             @else
-                                {{ $log->model }}
+                                <span class="badge badge-secondary">{{ ucfirst($log->aksi) }}</span>
                             @endif
                         </td>
-                        <td class="table-cell">
-                            @if($log->model == 'Barang Masuk' && $log->model_id)
-                                {{ \App\Models\BarangMasuk::find($log->model_id)?->barang->kategori->formatted_id ?? '-' }}
-                            @elseif($log->model == 'Barang Keluar' && $log->model_id)
-                                {{ \App\Models\BarangKeluar::find($log->model_id)?->barang->kategori->formatted_id ?? '-' }}
-                            @else
-                                -
-                            @endif
-                        </td>
-                        <td class="table-cell">{{ $log->description }}</td>
+                        <td class="table-cell">{{ $log->nama_barang ?? '-' }}</td>
+                        <td class="table-cell">{{ $log->kategori ? $log->kategori->formatted_id : ($log->id_kategori ?? '-') }}</td>
+                        <td class="table-cell">{{ $log->deskripsi }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -80,3 +66,4 @@
         {{ $activityLogs->links() }}
     </div>
 @endsection
+    

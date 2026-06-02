@@ -10,7 +10,10 @@
     <div class="card-header">
         <div>
             <h1 class="card-title">Dashboard</h1>
-            <p class="card-subtitle">Welcome, {{ auth()->user()->name }} ({{ auth()->user()->role === 'admin' ? 'Admin' : 'Manager' }})</p>
+            <p class="card-subtitle">Welcome, {{ auth()->user()->nama }} ({{ auth()->user()->role === 'admin' ? 'Admin' : (auth()->user()->role === 'manager' ? 'Manager' : 'Super Admin') }})</p>
+        </div>
+        <div class="mt-4 sm:mt-0">
+            <button onclick="openModal('modal-download-report')" class="btn btn-primary">Download Report</button>
         </div>
     </div>
 
@@ -116,7 +119,7 @@
                     @forelse($barangLowStock as $barang)
                     <tr class="table-body-row">
                         <td class="table-cell-mono">{{ $barang->formatted_id }}</td>
-                        <td class="table-cell">{{ $barang->nama }}</td>
+                        <td class="table-cell">{{ $barang->nama_barang }}</td>
                         <td class="table-cell-muted">{{ $barang->kategori->formatted_id ?? '-' }}</td>
                         <td class="table-cell-muted">{{ $barang->supplier->formatted_id ?? '-' }}</td>
                         <td class="table-cell">
@@ -130,6 +133,3 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-    </div>
-@endsection
