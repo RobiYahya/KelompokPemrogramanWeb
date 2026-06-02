@@ -15,8 +15,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-group">
                         <label for="nama_supplier" class="form-label">Supplier Name</label>
-                        <input type="text" name="nama" id="nama_supplier" class="form-input" placeholder="Enter supplier name" required>
-                        @error('nama')
+                        <input type="text" name="nama_supplier" id="nama_supplier" class="form-input" placeholder="Enter supplier name" required>
+                        @error('nama_supplier')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -29,8 +29,8 @@
                     </div>
                     <div class="form-group">
                         <label for="telepon_supplier" class="form-label">Phone</label>
-                        <input type="text" name="telepon" id="telepon_supplier" class="form-input" placeholder="Enter phone">
-                        @error('telepon')
+                        <input type="text" name="no_telp" id="telepon_supplier" class="form-input" placeholder="Enter phone">
+                        @error('no_telp')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>

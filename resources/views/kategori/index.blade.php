@@ -73,3 +73,31 @@
                             <div class="action-buttons">
                                 <button onclick="openEditKategoriModal({{ $item->id_kategori }}, '{{ addslashes($item->nama_kategori) }}')" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('kategori.destroy', $item->id_kategori) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this category?')">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            @else
+                            <span class="text-gray-400">-</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3" class="empty-state">No category data yet</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $kategori->links() }}
+    </div>
+@endsection
+
+@include('components.modal_kategori')
+@include('components.modal_kategori_edit')

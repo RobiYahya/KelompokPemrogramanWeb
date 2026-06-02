@@ -16,7 +16,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-group">
                         <label for="edit_nama_supplier" class="form-label">Supplier Name</label>
-                        <input type="text" name="nama" id="edit_nama_supplier" class="form-input" required>
+                        <input type="text" name="nama_supplier" id="edit_nama_supplier" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="edit_kontak_supplier" class="form-label">Contact</label>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_telepon_supplier" class="form-label">Phone</label>
-                        <input type="text" name="telepon" id="edit_telepon_supplier" class="form-input">
+                        <input type="text" name="no_telp" id="edit_telepon_supplier" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="edit_alamat_supplier" class="form-label">Address</label>

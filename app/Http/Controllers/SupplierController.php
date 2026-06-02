@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
@@ -14,73 +13,55 @@ class SupplierController extends Controller
         return view('supplier.index', compact('supplier'));
     }
 
-    public function create()
-    {
-        return view('supplier.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'kontak' => 'nullable|string|max:255',
-            'telepon' => 'nullable|string|max:255',
-            'alamat' => 'nullable|string|max:255',
+            'nama_supplier' => 'required|string|max:50',
+            'kontak'        => 'nullable|string|max:50',
+            'no_telp'       => 'nullable|string|max:20',
+            'alamat'        => 'nullable|string|max:50',
         ]);
 
-        $supplier = Supplier::create($request->all());
-
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'create',
-            'model' => 'Supplier',
-            'model_id' => $supplier->id,
-            'description' => 'Menambahkan supplier: ' . $supplier->nama,
+        $supplier = Supplier::create([
+            'nama_supplier' => $request->nama_supplier,
+            'kontak'        => $request->kontak,
+            'no_telp'       => $request->no_telp,
+            'alamat'        => $request->alamat,
         ]);
 
-        return redirect()->route('supplier.index')->with('success', 'Supplier berhasil ditambahkan');
-    }
+        ActivityLog::log('create', 'Added supplier: ' . $supplier->nama_supplier);
 
-    public function edit(Supplier $supplier)
-    {
-        return view('supplier.edit', compact('supplier'));
+        return redirect()->route('supplier.index')->with('success', 'Supplier added successfully');
     }
 
     public function update(Request $request, Supplier $supplier)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'kontak' => 'nullable|string|max:255',
-            'telepon' => 'nullable|string|max:255',
-            'alamat' => 'nullable|string|max:255',
+            'nama_supplier' => 'required|string|max:50',
+            'kontak'        => 'nullable|string|max:50',
+            'no_telp'       => 'nullable|string|max:20',
+            'alamat'        => 'nullable|string|max:50',
         ]);
 
-        $supplier->update($request->all());
-
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'update',
-            'model' => 'Supplier',
-            'model_id' => $supplier->id,
-            'description' => 'Mengubah supplier: ' . $supplier->nama,
+        $supplier->update([
+            'nama_supplier' => $request->nama_supplier,
+            'kontak'        => $request->kontak,
+            'no_telp'       => $request->no_telp,
+            'alamat'        => $request->alamat,
         ]);
 
-        return redirect()->route('supplier.index')->with('success', 'Supplier berhasil diperbarui');
+        ActivityLog::log('update', 'Updated supplier: ' . $supplier->nama_supplier);
+
+        return redirect()->route('supplier.index')->with('success', 'Supplier updated successfully');
     }
 
     public function destroy(Supplier $supplier)
     {
-        $nama = $supplier->nama;
+        $nama = $supplier->nama_supplier;
         $supplier->delete();
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'delete',
-            'model' => 'Supplier',
-            'model_id' => $supplier->id,
-            'description' => 'Menghapus supplier: ' . $nama,
-        ]);
+        ActivityLog::log('delete', 'Deleted supplier: ' . $nama);
 
-        return redirect()->route('supplier.index')->with('success', 'Supplier berhasil dihapus');
+        return redirect()->route('supplier.index')->with('success', 'Supplier deleted successfully');
     }
 }

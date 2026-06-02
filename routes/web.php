@@ -73,3 +73,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
+
+    // Report Routes
+    Route::get('/reports/preview', [ReportController::class, 'preview'])->name('reports.preview');
+    Route::post('/reports/download', [ReportController::class, 'download'])->name('reports.download');
+});

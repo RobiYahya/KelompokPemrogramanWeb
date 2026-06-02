@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
@@ -18,81 +17,54 @@ class BarangController extends Controller
         return view('barang.index', compact('barang', 'kategori', 'supplier'));
     }
 
-    public function create()
-    {
-        $kategori = Kategori::all();
-        $supplier = Supplier::all();
-        return view('barang.create', compact('kategori', 'supplier'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategori,id',
-            'supplier_id' => 'required|exists:supplier,id',
-            'stok' => 'required|integer|min:0',
-            'minimum_stok' => 'required|integer|min:0',
-            'harga_beli' => 'required|numeric|min:0',
+            'nama_barang' => 'required|string|max:50',
+            'id_kategori' => 'required|exists:kategori,id_kategori',
+            'id_supplier' => 'required|exists:supplier,id_supplier',
+            'stok'        => 'required|integer|min:0',
+            'min_stok'    => 'required|integer|min:0',
+            'harga'       => 'required|numeric|min:0',
         ]);
 
-        $barang = Barang::create($request->all());
+        $barang = Barang::create($request->only([
+            'nama_barang', 'id_kategori', 'id_supplier', 'stok', 'min_stok', 'harga'
+        ]));
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'create',
-            'model' => 'Barang',
-            'model_id' => $barang->id,
-            'description' => 'Menambahkan barang: ' . $barang->nama,
-        ]);
+        ActivityLog::log('create', 'Added item: ' . $barang->nama_barang, $barang->id_kategori, $barang->nama_barang);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan');
-    }
-
-    public function edit(Barang $barang)
-    {
-        $kategori = Kategori::all();
-        $supplier = Supplier::all();
-        return view('barang.edit', compact('barang', 'kategori', 'supplier'));
+        return redirect()->route('barang.index')->with('success', 'Item added successfully');
     }
 
     public function update(Request $request, Barang $barang)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategori,id',
-            'supplier_id' => 'required|exists:supplier,id',
-            'stok' => 'required|integer|min:0',
-            'minimum_stok' => 'required|integer|min:0',
-            'harga_beli' => 'required|numeric|min:0',
+            'nama_barang' => 'required|string|max:50',
+            'id_kategori' => 'required|exists:kategori,id_kategori',
+            'id_supplier' => 'required|exists:supplier,id_supplier',
+            'stok'        => 'required|integer|min:0',
+            'min_stok'    => 'required|integer|min:0',
+            'harga'       => 'required|numeric|min:0',
         ]);
 
-        $barang->update($request->all());
+        $barang->update($request->only([
+            'nama_barang', 'id_kategori', 'id_supplier', 'stok', 'min_stok', 'harga'
+        ]));
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'update',
-            'model' => 'Barang',
-            'model_id' => $barang->id,
-            'description' => 'Mengubah barang: ' . $barang->nama,
-        ]);
+        ActivityLog::log('update', 'Updated item: ' . $barang->nama_barang, $barang->id_kategori, $barang->nama_barang);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui');
+        return redirect()->route('barang.index')->with('success', 'Item updated successfully');
     }
 
     public function destroy(Barang $barang)
     {
-        $nama = $barang->nama;
+        $idKategori = $barang->id_kategori;
+        $namaBarang = $barang->nama_barang;
         $barang->delete();
 
-        ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'delete',
-            'model' => 'Barang',
-            'model_id' => $barang->id,
-            'description' => 'Menghapus barang: ' . $nama,
-        ]);
+        ActivityLog::log('delete', 'Deleted item: ' . $namaBarang, $idKategori, $namaBarang);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus');
+        return redirect()->route('barang.index')->with('success', 'Item deleted successfully');
     }
 }

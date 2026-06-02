@@ -133,3 +133,8 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+    </div>
+@endsection
+
+@include('components.modal_download_report')
