@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users', 'id_user')->onDelete('cascade');
             $table->string('action'); // create, update, delete
             $table->string('model'); // Kategori, Supplier, Barang, etc.
             $table->unsignedBigInteger('model_id')->nullable();

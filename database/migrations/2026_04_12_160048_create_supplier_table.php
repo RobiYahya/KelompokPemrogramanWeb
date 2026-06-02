@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('supplier', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
+            $table->bigIncrements('id_supplier');
+            $table->string('nama_supplier');
             $table->string('kontak')->nullable();
-            $table->string('telepon')->nullable();
+            $table->string('no_telp')->nullable();
             $table->string('alamat')->nullable();
             $table->timestamps();
         });
