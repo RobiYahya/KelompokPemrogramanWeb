@@ -2,10 +2,6 @@
 
 @section('title', 'Suppliers - Magura')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>
@@ -13,7 +9,7 @@
             <p class="card-subtitle">Manage supplier data</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            @if(auth()->user()->role == 'admin')
+            @if(auth()->user()->role === 'admin')
             <button onclick="openModal('modal-supplier')" class="btn btn-primary">+ Add Supplier</button>
             @endif
         </div>
@@ -47,9 +43,9 @@
                         <td class="table-cell-muted">{{ $item->no_telp ?? '-' }}</td>
                         <td class="table-cell-muted">{{ $item->alamat ?? '-' }}</td>
                         <td class="table-cell">
-                            @if(auth()->user()->role == 'admin')
+                            @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditSupplierModal({{ $item->id_supplier }}, '{{ addslashes($item->nama_supplier) }}', '{{ addslashes($item->kontak ?? '') }}', '{{ addslashes($item->no_telp ?? '') }}', '{{ addslashes($item->alamat ?? '') }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditSupplierModal(@json($item->id_supplier), @json($item->nama_supplier), @json($item->kontak), @json($item->no_telp), @json($item->alamat))" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('supplier.destroy', $item->id_supplier) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">

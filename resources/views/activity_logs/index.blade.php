@@ -2,10 +2,6 @@
 
 @section('title', 'Activity Logs - Magura')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>

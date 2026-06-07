@@ -41,13 +41,7 @@ class ReportController extends Controller
                 ];
             } else {
                 // Sumber data: ActivityLog — tetap seperti sebelumnya
-                $aksi = $item->aksi;
-                if ($aksi == 'create')        $aksi = 'Add';
-                elseif ($aksi == 'update')    $aksi = 'Edit';
-                elseif ($aksi == 'delete')    $aksi = 'Delete';
-                elseif ($aksi == 'barang_masuk')  $aksi = 'Incoming';
-                elseif ($aksi == 'barang_keluar') $aksi = 'Outgoing';
-                else $aksi = ucfirst($aksi);
+                $aksi = $this->translateAksi($item->aksi);
 
                 $kategoriId = $item->kategori
                     ? $item->kategori->formatted_id
@@ -142,6 +136,21 @@ class ReportController extends Controller
             default:
                 return collect();
         }
+    }
+
+    /**
+     * Translate raw action string to human-readable label.
+     */
+    private function translateAksi(string $aksi): string
+    {
+        return match ($aksi) {
+            'create'        => 'Add',
+            'update'        => 'Edit',
+            'delete'        => 'Delete',
+            'barang_masuk'  => 'Incoming',
+            'barang_keluar' => 'Outgoing',
+            default         => ucfirst($aksi),
+        };
     }
 
     /**
@@ -303,13 +312,7 @@ class ReportController extends Controller
                     ? Carbon::parse($item->tanggal)->format('d/m/Y H:i')
                     : '-';
 
-                $aksi = $item->aksi;
-                if ($aksi == 'create')            $aksi = 'Add';
-                elseif ($aksi == 'update')        $aksi = 'Edit';
-                elseif ($aksi == 'delete')        $aksi = 'Delete';
-                elseif ($aksi == 'barang_masuk')  $aksi = 'Incoming';
-                elseif ($aksi == 'barang_keluar') $aksi = 'Outgoing';
-                else $aksi = ucfirst($aksi);
+                $aksi = $this->translateAksi($item->aksi);
 
                 $kategoriId = $item->kategori
                     ? $item->kategori->formatted_id
@@ -377,13 +380,7 @@ class ReportController extends Controller
                     ? Carbon::parse($item->tanggal)->format('d/m/Y H:i')
                     : '-';
 
-                $aksi = $item->aksi;
-                if ($aksi == 'create')            $aksi = 'Add';
-                elseif ($aksi == 'update')        $aksi = 'Edit';
-                elseif ($aksi == 'delete')        $aksi = 'Delete';
-                elseif ($aksi == 'barang_masuk')  $aksi = 'Incoming';
-                elseif ($aksi == 'barang_keluar') $aksi = 'Outgoing';
-                else $aksi = ucfirst($aksi);
+                $aksi = $this->translateAksi($item->aksi);
 
                 $kategoriId = $item->kategori
                     ? $item->kategori->formatted_id

@@ -18,6 +18,10 @@ abstract class BaseStockTransaction implements StockTransactionInterface
                 ->lockForUpdate()
                 ->first();
 
+            if (!$barang) {
+                throw new \Exception('Item not found. It may have been deleted.');
+            }
+
             $this->buatRecord(
                 $request->id_barang,
                 $request->jumlah,

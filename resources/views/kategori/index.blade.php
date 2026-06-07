@@ -2,10 +2,6 @@
 
 @section('title', 'Categories - Magura')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>
@@ -13,7 +9,7 @@
             <p class="card-subtitle">Manage category data</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            @if(auth()->user()->role == 'admin')
+            @if(auth()->user()->role === 'admin')
             <button onclick="openModal('modal-kategori')" class="btn btn-primary">+ Add Category</button>
             @endif
         </div>
@@ -69,7 +65,7 @@
                         <td class="table-cell-mono">{{ $item->formatted_id }}</td>
                         <td class="table-cell">{{ $item->nama_kategori }}</td>
                         <td class="table-cell">
-                            @if(auth()->user()->role == 'admin')
+                            @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
                                 <button onclick="openEditKategoriModal({{ $item->id_kategori }}, '{{ addslashes($item->nama_kategori) }}')" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('kategori.destroy', $item->id_kategori) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this category?')">

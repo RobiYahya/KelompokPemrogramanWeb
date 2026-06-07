@@ -2,10 +2,6 @@
 
 @section('title', 'Outgoing Items - Magura')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>
@@ -13,7 +9,7 @@
             <p class="card-subtitle">Outgoing items history</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            @if(auth()->user()->role == 'admin')
+            @if(auth()->user()->role === 'admin')
             <button onclick="openModal('modal-barang-keluar')" class="btn btn-primary">+ Outgoing</button>
             @endif
         </div>
@@ -55,9 +51,9 @@
                         <td class="table-cell-muted">{{ $item->tanggal }}</td>
                         <td class="table-cell-muted">{{ $item->deskripsi ?? '-' }}</td>
                         <td class="table-cell">
-                            @if(auth()->user()->role == 'admin')
+                            @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditModalKeluar({{ $item->id_keluar }}, {{ $item->id_barang }}, {{ $item->jumlah }}, '{{ $item->tanggal }}', '{{ addslashes($item->deskripsi ?? '') }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditModalKeluar(@json($item->id_keluar), @json($item->id_barang), @json($item->jumlah), @json($item->tanggal), @json($item->deskripsi))" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('barang_keluar.destroy', $item->id_keluar) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">

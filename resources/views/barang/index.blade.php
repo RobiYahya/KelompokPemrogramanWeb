@@ -2,10 +2,6 @@
 
 @section('title', 'Items - Magura')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>
@@ -13,7 +9,7 @@
             <p class="card-subtitle">Manage item data</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            @if(auth()->user()->role == 'admin')
+            @if(auth()->user()->role === 'admin')
             <button onclick="openModal('modal-barang')" class="btn btn-primary">+ Add Item</button>
             @endif
         </div>
@@ -22,6 +18,12 @@
     @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-error">
+        {{ session('error') }}
     </div>
     @endif
 
@@ -51,9 +53,9 @@
                         <td class="table-cell-muted">{{ $item->min_stok }}</td>
                         <td class="table-cell-muted">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
                         <td class="table-cell">
-                            @if(auth()->user()->role == 'admin')
+                            @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditBarangModal({{ $item->id_barang }}, '{{ addslashes($item->nama_barang) }}', {{ $item->id_kategori ?? 'null' }}, {{ $item->id_supplier ?? 'null' }}, {{ $item->stok }}, {{ $item->min_stok }}, {{ $item->harga }})" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditBarangModal(@json($item->id_barang), @json($item->nama_barang), @json($item->id_kategori), @json($item->id_supplier), @json($item->stok), @json($item->min_stok), @json($item->harga))" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('barang.destroy', $item->id_barang) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">

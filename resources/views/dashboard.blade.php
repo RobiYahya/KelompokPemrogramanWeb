@@ -2,10 +2,6 @@
 
 @section('title', 'Dashboard - MAGURA')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>

@@ -135,7 +135,7 @@
 
                 <script>
                 function openEditBarangModal(id, nama, kategoriId, supplierId, stok, minimumStok, hargaBeli) {
-                    document.getElementById('form-edit-barang').action = '/admin/barang/' + id;
+                    document.getElementById('form-edit-barang').action = '{{ route('barang.update', ':id') }}'.replace(':id', id);
                     document.getElementById('edit_nama_barang').value = nama;
                     document.getElementById('edit_kategori_barang').value = kategoriId;
                     document.getElementById('edit_supplier_barang').value = supplierId;

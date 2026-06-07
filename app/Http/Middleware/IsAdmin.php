@@ -14,8 +14,8 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->role !== 'admin') {
-            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this page.');
         }
         return $next($request);
     }

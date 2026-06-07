@@ -74,7 +74,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
-    // Report Routes
-    Route::get('/reports/preview', [ReportController::class, 'preview'])->name('reports.preview');
-    Route::post('/reports/download', [ReportController::class, 'download'])->name('reports.download');
+    // Report Routes — accessible by admin and manager roles
+    Route::middleware(['admin_or_manager'])->group(function () {
+        Route::get('/reports/preview', [ReportController::class, 'preview'])->name('reports.preview');
+        Route::post('/reports/download', [ReportController::class, 'download'])->name('reports.download');
+    });
 });

@@ -37,22 +37,35 @@ class UserController extends Controller
         if ($user->role === 'super_admin') {
             abort(403, 'Cannot edit Super Admin account');
         }
-        $request->validate([
+
+        $rules = [
             'nama'       => 'required|string|max:50',
             'email'      => 'required|string|email|max:50|unique:users,email,' . $user->id_user . ',id_user',
             'id_pegawai' => 'required|string|max:50|unique:users,id_pegawai,' . $user->id_user . ',id_user',
             'role'       => 'required|in:admin,manager',
-        ]);
-        $user->update([
-            'nama'       => $request->nama,
-            'email'      => $request->email,
-            'id_pegawai' => $request->id_pegawai,
-            'role'       => $request->role,
-        ]);
+        ];
+
+        // Validate password together with other fields so update only runs if everything is valid
         if ($request->filled('password')) {
-            $request->validate(['password' => 'required|string|min:8|confirmed']);
-            $user->update(['password' => Hash::make($request->password)]);
+            $rules['password']              = 'required|string|min:8|confirmed';
+            $rules['password_confirmation'] = 'required';
         }
+
+        $validated = $request->validate($rules);
+
+        $data = [
+            'nama'       => $validated['nama'],
+            'email'      => $validated['email'],
+            'id_pegawai' => $validated['id_pegawai'],
+            'role'       => $validated['role'],
+        ];
+
+        if (!empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+        $user->update($data);
+
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 

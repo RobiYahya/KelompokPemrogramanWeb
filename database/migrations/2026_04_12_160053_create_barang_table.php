@@ -12,14 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('barang', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->unsignedBigInteger('kategori_id');
-            $table->unsignedBigInteger('supplier_id');
+            $table->bigIncrements('id_barang');
+            $table->string('nama_barang', 50);
+            $table->unsignedBigInteger('id_kategori')->nullable();
+            $table->unsignedBigInteger('id_supplier')->nullable();
             $table->integer('stok')->default(0);
-            $table->integer('minimum_stok')->default(10);
-            $table->decimal('harga_beli', 10, 2)->default(0.00);
+            $table->integer('min_stok')->default(10);
+            $table->decimal('harga', 10, 2)->default(0.00);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('id_kategori')
+                ->references('id_kategori')->on('kategori')
+                ->onDelete('set null');
+
+            $table->foreign('id_supplier')
+                ->references('id_supplier')->on('supplier')
+                ->onDelete('set null');
         });
     }
 
@@ -31,3 +40,4 @@ return new class extends Migration
         Schema::dropIfExists('barang');
     }
 };
+

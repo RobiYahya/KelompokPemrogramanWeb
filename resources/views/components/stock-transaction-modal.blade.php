@@ -114,7 +114,7 @@
                 <script>
                 function openEditModalMasuk(id, barangId, jumlah, tanggal, keterangan) {
                     const form = document.getElementById('form-edit-barang-masuk');
-                    form.action = '/admin/barang-masuk/' + id;
+                    form.action = '{{ route('barang_masuk.update', ':id') }}'.replace(':id', id);
                     document.getElementById('edit_id_masuk').value = id;
                     document.getElementById('edit_barang_masuk').value = barangId;
                     document.getElementById('edit_jumlah_masuk').value = jumlah;
@@ -127,7 +127,7 @@
                 <script>
                 function openEditModalKeluar(id, barangId, jumlah, tanggal, keterangan) {
                     const form = document.getElementById('form-edit-barang-keluar');
-                    form.action = '/admin/barang-keluar/' + id;
+                    form.action = '{{ route('barang_keluar.update', ':id') }}'.replace(':id', id);
                     document.getElementById('edit_id_keluar').value = id;
                     document.getElementById('edit_barang_keluar').value = barangId;
                     document.getElementById('edit_jumlah_keluar').value = jumlah;

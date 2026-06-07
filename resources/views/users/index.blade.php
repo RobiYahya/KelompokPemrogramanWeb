@@ -2,10 +2,6 @@
 
 @section('title', 'User Management - MAGURA')
 
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
-
 @section('content')
     <div class="card-header">
         <div>
@@ -58,7 +54,7 @@
                         </td>
                         <td class="table-cell">
                             <div class="action-buttons">
-                                <button onclick="openEditUserModal({{ $user->id_user }}, '{{ $user->nama }}', '{{ $user->email }}', '{{ $user->id_pegawai }}', '{{ $user->role }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditUserModal(@json($user->id_user), @json($user->nama), @json($user->email), @json($user->id_pegawai), @json($user->role))" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('users.destroy', $user->id_user) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -88,7 +84,7 @@
 
 <script>
 function openEditUserModal(id, name, email, idPegawai, role) {
-    document.getElementById('form-edit-user').action = '/admin/users/' + id;
+    document.getElementById('form-edit-user').action = '{{ route('users.update', ':id') }}'.replace(':id', id);
     document.getElementById('edit_name').value = name;
     document.getElementById('edit_email').value = email;
     document.getElementById('edit_id_pegawai').value = idPegawai;
