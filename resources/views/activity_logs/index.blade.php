@@ -29,15 +29,15 @@
                         <td class="table-cell">{{ $log->tanggal ? \Carbon\Carbon::parse($log->tanggal)->format('d/m/Y H:i') : '-' }}</td>
                         <td class="table-cell">{{ $log->user->nama ?? 'Unknown' }}</td>
                         <td class="table-cell">
-                            @if($log->aksi == 'create')
+                            @if($log->aksi === 'create')
                                 <span class="badge badge-green">Add</span>
-                            @elseif($log->aksi == 'update')
+                            @elseif($log->aksi === 'update')
                                 <span class="badge badge-yellow">Edit</span>
-                            @elseif($log->aksi == 'delete')
+                            @elseif($log->aksi === 'delete')
                                 <span class="badge badge-red">Delete</span>
-                            @elseif($log->aksi == 'barang_keluar')
+                            @elseif($log->aksi === 'barang_keluar')
                                 <span class="badge badge-blue">Outgoing</span>
-                            @elseif($log->aksi == 'barang_masuk')
+                            @elseif($log->aksi === 'barang_masuk')
                                 <span class="badge badge-green">Incoming</span>
                             @else
                                 <span class="badge badge-secondary">{{ ucfirst($log->aksi) }}</span>
