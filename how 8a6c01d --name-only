@@ -1,0 +1,24 @@
+[33m8a6c01d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m penerapan oop dalam barang masuk dan barang keluar
+[33m709b281[m membuat crud barang dan supplier, memperbaiki file error
+[33mfbe3e4d[m menambahkan CRUD kategori, membuat view data report, dan menambahkan yang diperlukan
+[33mba5ed8e[m membuat crud barang masuk barang keluar
+[33m825e154[m mengubah penamaan dari sigura menjadi magura
+[33m092f4df[m membuat form pop-up dan menambah button edit di barang masuk dan keluar
+[33m2b00538[m menambah popup di button edit dan dummy data
+[33m6380d4f[m merubah ukuran logo
+[33m3b64ae0[m menambahkan logo
+[33mf91eb6f[m fix bug 2
+[33m745cc33[m fix error bug
+[33ma629e09[m Fix merge conflicts
+[33m1a9fe80[m membuat kontroler routes dan menghapus aset tidak penting
+[33mc8ee129[m menambahkan Controller Barang Keluar, Barang Masuk, dan Kategori
+[33m23cd4c4[m menambahkan Controller Barang, Contact, dan Supplier
+[33m6b8d108[m membuat tampilan login dashboard dan riwayat aktifitas
+[33m245477c[m membuat tampilan login dashboard dan riwayat aktifitas
+[33m2ea8512[m membuat halaman barang, layouts, dan supplier
+[33meda79e0[m menambahkan barang keluar, barang masuk, dan kategori
+[33m274e8c0[m menambahkan DashboardController
+[33me1191f5[m membuat login
+[33m49e3121[m membuat routes login
+[33m7cf9b6b[m pertama kali
+[33m13463a9[m mengerjakan pemrograman web design menggunakan tailwind dan blade templating
