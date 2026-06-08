@@ -10,7 +10,7 @@ class Supplier extends Model
     protected $primaryKey = 'id_supplier';
 
     // id_divisi dihapus — tabel divisi tidak ada di ERD & database
-    protected $fillable = ['nama_supplier', 'kontak', 'no_telp', 'alamat'];
+    protected $fillable = ['nama_supplier', 'divisi', 'kontak', 'no_telp', 'alamat'];
 
     protected $appends = ['formatted_id'];
 

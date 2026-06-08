@@ -19,6 +19,10 @@
                         <input type="text" name="nama_supplier" id="edit_nama_supplier" class="form-input" required>
                     </div>
                     <div class="form-group">
+                        <label for="edit_divisi_supplier" class="form-label">Division</label>
+                        <input type="text" name="divisi" id="edit_divisi_supplier" class="form-input" placeholder="Enter division / jabatan">
+                    </div>
+                    <div class="form-group">
                         <label for="edit_kontak_supplier" class="form-label">Contact</label>
                         <input type="text" name="kontak" id="edit_kontak_supplier" class="form-input">
                     </div>
@@ -26,7 +30,7 @@
                         <label for="edit_telepon_supplier" class="form-label">Phone</label>
                         <input type="text" name="no_telp" id="edit_telepon_supplier" class="form-input">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group md:col-span-2">
                         <label for="edit_alamat_supplier" class="form-label">Address</label>
                         <input type="text" name="alamat" id="edit_alamat_supplier" class="form-input">
                     </div>
@@ -41,9 +45,10 @@
 </div>
 
 <script>
-function openEditSupplierModal(id, nama, kontak, telepon, alamat) {
+function openEditSupplierModal(id, nama, divisi, kontak, telepon, alamat) {
     document.getElementById('form-edit-supplier').action = '/admin/supplier/' + id;
     document.getElementById('edit_nama_supplier').value = nama;
+    document.getElementById('edit_divisi_supplier').value = divisi || '';
     document.getElementById('edit_kontak_supplier').value = kontak || '';
     document.getElementById('edit_telepon_supplier').value = telepon || '';
     document.getElementById('edit_alamat_supplier').value = alamat || '';

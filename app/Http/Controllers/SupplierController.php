@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
@@ -17,13 +18,15 @@ class SupplierController extends Controller
     {
         $request->validate([
             'nama_supplier' => 'required|string|max:50',
+            'divisi'        => 'nullable|string|max:50',
             'kontak'        => 'nullable|string|max:50',
             'no_telp'       => 'nullable|string|max:20',
-            'alamat'        => 'nullable|string|max:50',
+            'alamat'        => 'nullable|string|max:250',
         ]);
 
         $supplier = Supplier::create([
             'nama_supplier' => $request->nama_supplier,
+            'divisi'        => $request->divisi,
             'kontak'        => $request->kontak,
             'no_telp'       => $request->no_telp,
             'alamat'        => $request->alamat,
@@ -38,13 +41,15 @@ class SupplierController extends Controller
     {
         $request->validate([
             'nama_supplier' => 'required|string|max:50',
+            'divisi'        => 'nullable|string|max:50',
             'kontak'        => 'nullable|string|max:50',
             'no_telp'       => 'nullable|string|max:20',
-            'alamat'        => 'nullable|string|max:50',
+            'alamat'        => 'nullable|string|max:250',
         ]);
 
         $supplier->update([
             'nama_supplier' => $request->nama_supplier,
+            'divisi'        => $request->divisi,
             'kontak'        => $request->kontak,
             'no_telp'       => $request->no_telp,
             'alamat'        => $request->alamat,

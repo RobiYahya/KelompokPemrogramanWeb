@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
@@ -11,9 +12,10 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $barang = Barang::with(['kategori', 'supplier'])->paginate(10);
-        $kategori = Kategori::all();
-        $supplier = Supplier::all();
+        $barang   = Barang::with(['kategori', 'supplier'])->paginate(10);
+        // BUG-009 Fix: Hanya ambil kolom yang dibutuhkan untuk dropdown modal
+        $kategori = Kategori::select('id_kategori', 'nama_kategori')->get();
+        $supplier = Supplier::select('id_supplier', 'nama_supplier')->get();
         return view('barang.index', compact('barang', 'kategori', 'supplier'));
     }
 

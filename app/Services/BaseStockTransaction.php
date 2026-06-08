@@ -39,6 +39,7 @@ abstract class BaseStockTransaction implements StockTransactionInterface
             );
         });
     }
+
     public function update(array $validated, $transaction): void
     {
         DB::transaction(function () use ($validated, $transaction) {
@@ -57,6 +58,10 @@ abstract class BaseStockTransaction implements StockTransactionInterface
                 ->lockForUpdate()
                 ->first();
 
+            if (!$barangBaru) {
+                throw new \Exception('Item not found. It may have been permanently deleted.');
+            }
+
             $this->validasiSebelumUpdate($barangBaru, $validated['jumlah']);
 
             $transaction->update([
@@ -67,17 +72,15 @@ abstract class BaseStockTransaction implements StockTransactionInterface
             ]);
 
             // Terapkan efek stok baru (polymorphisme)
-            if ($barangBaru) {
-                $this->prosesStok($barangBaru, $validated['jumlah']);
-            }
+            $this->prosesStok($barangBaru, $validated['jumlah']);
 
             ActivityLog::log(
                 'update',
                 'Updated ' . strtolower($this->getLogPrefix()) . ' item: '
-                    . ($barangBaru->nama_barang ?? 'Unknown')
+                    . $barangBaru->nama_barang
                     . ' (' . $validated['jumlah'] . ' units)',
-                $barangBaru->id_kategori ?? null,
-                $barangBaru->nama_barang ?? 'Unknown'
+                $barangBaru->id_kategori,
+                $barangBaru->nama_barang
             );
         });
     }

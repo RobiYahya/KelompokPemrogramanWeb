@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama_barang', 50);
             $table->unsignedBigInteger('id_kategori')->nullable();
             $table->unsignedBigInteger('id_supplier')->nullable();
-            $table->integer('stok')->default(0);
-            $table->integer('min_stok')->default(10);
+            $table->unsignedInteger('stok')->default(0);     // unsigned: stok tidak bisa negatif
+            $table->unsignedInteger('min_stok')->default(10); // unsigned: min stok tidak bisa negatif
             $table->decimal('harga', 10, 2)->default(0.00);
             $table->timestamps();
             $table->softDeletes();
@@ -40,4 +40,3 @@ return new class extends Migration
         Schema::dropIfExists('barang');
     }
 };
-

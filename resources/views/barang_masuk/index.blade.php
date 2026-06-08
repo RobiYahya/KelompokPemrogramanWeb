@@ -48,7 +48,7 @@
                         <td class="table-cell-mono">{{ $item->barang->formatted_id ?? '-' }}</td>
                         <td class="table-cell">{{ $item->barang->nama_barang ?? '-' }}</td>
                         <td class="table-cell">{{ $item->jumlah }}</td>
-                        <td class="table-cell-muted">{{ $item->tanggal }}</td>
+                        <td class="table-cell-muted">{{ $item->tanggal ? \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') : '-' }}</td>
                         <td class="table-cell-muted">{{ $item->deskripsi ?? '-' }}</td>
                         <td class="table-cell">
                             @if(auth()->user()->role === 'admin')

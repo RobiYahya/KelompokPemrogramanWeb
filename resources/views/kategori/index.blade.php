@@ -15,6 +15,12 @@
         </div>
     </div>
 
+    @if(session('error'))
+    <div class="alert alert-error">
+        {{ session('error') }}
+    </div>
+    @endif
+
     @if(session('error_pop'))
     <div id="modal-error-pop" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-all duration-300">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-100 transition-all border border-red-100">
@@ -67,7 +73,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditKategoriModal({{ $item->id_kategori }}, '{{ addslashes($item->nama_kategori) }}')" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditKategoriModal(@json($item->id_kategori), @json($item->nama_kategori))" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('kategori.destroy', $item->id_kategori) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this category?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">

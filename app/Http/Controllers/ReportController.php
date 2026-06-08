@@ -6,7 +6,6 @@ use App\Models\ActivityLog;
 use App\Models\BarangMasuk;
 use App\Models\BarangKeluar;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
@@ -106,14 +105,12 @@ class ReportController extends Controller
     {
         switch ($reportType) {
             case 'barang_masuk':
-                // FIX: ambil dari tabel barang_masuk, bukan ActivityLog
                 return BarangMasuk::with(['barang', 'user'])
                     ->whereBetween('tanggal', [$startDate, $endDate])
                     ->orderBy('tanggal', 'desc')
                     ->get();
 
             case 'barang_keluar':
-                // FIX: ambil dari tabel barang_keluar, bukan ActivityLog
                 return BarangKeluar::with(['barang', 'user'])
                     ->whereBetween('tanggal', [$startDate, $endDate])
                     ->orderBy('tanggal', 'desc')
@@ -168,25 +165,25 @@ class ReportController extends Controller
 
     /**
      * Generate Excel (CSV) report.
+     * BUG-016 Fix: Stream directly to browser — no disk write, no orphan files.
      */
     private function generateExcel($data, $reportType, $filename)
     {
-        $csv = $this->generateCSVReport($data, $reportType);
-
+        $csv      = $this->generateCSVReport($data, $reportType);
         $filename .= '.csv';
-        $path = storage_path('app/reports/' . $filename);
 
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0755, true);
-        }
-
-        file_put_contents($path, $csv);
-
-        return Response::download($path, $filename)->deleteFileAfterSend(true);
+        return response($csv, 200, [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ]);
     }
 
     /**
      * Generate HTML report.
+     * BUG-002 Fix: All user-controlled data escaped with htmlspecialchars().
      */
     private function generateHTMLReport($data, $reportType)
     {
@@ -197,7 +194,7 @@ class ReportController extends Controller
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>' . $title . '</title>
+    <title>' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #6b21a8; }
@@ -208,7 +205,7 @@ class ReportController extends Controller
     </style>
 </head>
 <body>
-    <h1>' . $title . '</h1>
+    <h1>' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</h1>
     <p>Generated on: ' . date('Y-m-d H:i:s') . '</p>
     <table>';
 
@@ -266,9 +263,6 @@ class ReportController extends Controller
 
     /**
      * Get table headers HTML.
-     *
-     * barang_masuk/keluar: tambah Transaction ID dan User.
-     * data_edit/delete: tidak berubah.
      */
     private function getTableHeaders($reportType)
     {
@@ -284,30 +278,32 @@ class ReportController extends Controller
 
     /**
      * Get table row HTML.
+     * BUG-002 Fix: All dynamic values escaped to prevent XSS in PDF/HTML output.
      */
     private function getTableRow($item, $reportType)
     {
+        // Helper closure: escape for HTML output
+        $h = fn($s) => htmlspecialchars((string) ($s ?? '-'), ENT_QUOTES, 'UTF-8');
+
         switch ($reportType) {
             case 'barang_masuk':
             case 'barang_keluar':
-                // FIX: data langsung dari model transaksi — tidak perlu regex/lookup
                 $formattedDate = $item->tanggal
                     ? Carbon::parse($item->tanggal)->format('d/m/Y')
                     : '-';
 
                 return '<tr>
-                    <td>' . $item->formatted_id . '</td>
-                    <td>' . ($item->barang->formatted_id ?? '-') . '</td>
-                    <td>' . ($item->barang->nama_barang ?? '-') . '</td>
-                    <td>' . $item->jumlah . '</td>
-                    <td>' . $formattedDate . '</td>
-                    <td>' . ($item->deskripsi ?? '-') . '</td>
-                    <td>' . ($item->user->nama ?? '-') . '</td>
+                    <td>' . $h($item->formatted_id) . '</td>
+                    <td>' . $h($item->barang->formatted_id ?? '-') . '</td>
+                    <td>' . $h($item->barang->nama_barang ?? '-') . '</td>
+                    <td>' . $h($item->jumlah) . '</td>
+                    <td>' . $h($formattedDate) . '</td>
+                    <td>' . $h($item->deskripsi ?? '-') . '</td>
+                    <td>' . $h($item->user->nama ?? '-') . '</td>
                 </tr>';
 
             case 'data_edit':
             case 'data_delete':
-                // Tidak berubah — tetap dari ActivityLog
                 $formattedDate = $item->tanggal
                     ? Carbon::parse($item->tanggal)->format('d/m/Y H:i')
                     : '-';
@@ -319,12 +315,12 @@ class ReportController extends Controller
                     : ($item->id_kategori ?? '-');
 
                 return '<tr>
-                    <td>' . $formattedDate . '</td>
-                    <td>' . ($item->user->nama ?? '-') . '</td>
-                    <td>' . $aksi . '</td>
-                    <td>' . ($item->nama_barang ?? '-') . '</td>
-                    <td>' . $kategoriId . '</td>
-                    <td>' . ($item->deskripsi ?? '-') . '</td>
+                    <td>' . $h($formattedDate) . '</td>
+                    <td>' . $h($item->user->nama ?? '-') . '</td>
+                    <td>' . $h($aksi) . '</td>
+                    <td>' . $h($item->nama_barang ?? '-') . '</td>
+                    <td>' . $h($kategoriId) . '</td>
+                    <td>' . $h($item->deskripsi ?? '-') . '</td>
                 </tr>';
 
             default:
@@ -334,9 +330,6 @@ class ReportController extends Controller
 
     /**
      * Get CSV headers array.
-     *
-     * barang_masuk/keluar: tambah Transaction ID dan User.
-     * data_edit/delete: tidak berubah.
      */
     private function getCSVHeaders($reportType)
     {
@@ -358,7 +351,6 @@ class ReportController extends Controller
         switch ($reportType) {
             case 'barang_masuk':
             case 'barang_keluar':
-                // FIX: data langsung dari model transaksi — tidak perlu regex/lookup
                 $formattedDate = $item->tanggal
                     ? Carbon::parse($item->tanggal)->format('d/m/Y')
                     : '-';
@@ -375,7 +367,6 @@ class ReportController extends Controller
 
             case 'data_edit':
             case 'data_delete':
-                // Tidak berubah — tetap dari ActivityLog
                 $formattedDate = $item->tanggal
                     ? Carbon::parse($item->tanggal)->format('d/m/Y H:i')
                     : '-';

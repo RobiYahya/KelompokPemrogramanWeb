@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('histori_aktivitas', function (Blueprint $table) {
             $table->bigIncrements('id_histori');
-            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_user')->nullable(); // nullable: audit log tetap ada saat user dihapus
             $table->string('aksi', 50);
             $table->unsignedBigInteger('id_kategori')->nullable();
             $table->string('nama_barang', 50)->nullable();
             $table->text('deskripsi');
-            $table->timestamp('tanggal')->nullable(); // used as created_at (ActivityLog::CREATED_AT)
+            $table->timestamp('tanggal')->nullable()->index(); // index: mempercepat query filter tanggal
 
             $table->foreign('id_user')
                 ->references('id_user')->on('users')
-                ->onDelete('cascade');
+                ->onDelete('set null'); // set null: histori tidak hilang saat user dihapus
         });
     }
 

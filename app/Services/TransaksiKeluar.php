@@ -44,7 +44,7 @@ class TransaksiKeluar extends BaseStockTransaction
 
     protected function validasiSebelumUpdate(Barang $barang, int $jumlah): void
     {
-        $stokTersedia = $barang->fresh()->stok;
+        $stokTersedia = $barang->stok;
 
         if ($stokTersedia < $jumlah) {
             throw new \Exception('Insufficient stock! Available stock: ' . $stokTersedia . ' units');

@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -20,7 +22,8 @@ class UserController extends Controller
             'email'      => 'required|string|email|max:50|unique:users,email',
             'id_pegawai' => 'required|string|max:50|unique:users,id_pegawai',
             'role'       => 'required|in:admin,manager',
-            'password'   => 'required|string|min:8|confirmed',
+            // BUG-015 Fix: Password rule lebih kuat — min 8 char, harus ada huruf dan angka
+            'password'   => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
         ]);
         User::create([
             'nama'       => $request->nama,
@@ -47,7 +50,8 @@ class UserController extends Controller
 
         // Validate password together with other fields so update only runs if everything is valid
         if ($request->filled('password')) {
-            $rules['password']              = 'required|string|min:8|confirmed';
+            // BUG-015 Fix: Password rule lebih kuat
+            $rules['password']              = ['required', 'confirmed', Password::min(8)->letters()->numbers()];
             $rules['password_confirmation'] = 'required';
         }
 

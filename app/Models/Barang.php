@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Barang extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'barang';
     protected $primaryKey = 'id_barang';
@@ -17,7 +18,7 @@ class Barang extends Model
 
     public function getFormattedIdAttribute()
     {
-        $prefix = strtolower(substr(preg_replace('/[^a-zA-Z]/', '', $this->nama_barang), 0, 3));
+        $prefix = strtolower(substr(preg_replace('/[^a-zA-Z]/', '', $this->nama_barang ?? ''), 0, 3));
         if (strlen($prefix) < 3) {
             $prefix = str_pad($prefix, 3, 'x');
         }

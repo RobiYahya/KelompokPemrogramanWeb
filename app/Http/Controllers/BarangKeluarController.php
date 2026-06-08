@@ -18,7 +18,8 @@ class BarangKeluarController extends Controller
     public function index()
     {
         $barangKeluar = BarangKeluar::with('barang')->latest()->paginate(10);
-        $barang = Barang::all();
+        // BUG-009 Fix: Hanya ambil kolom yang dibutuhkan untuk dropdown modal
+        $barang = Barang::select('id_barang', 'nama_barang', 'stok')->get();
         return view('barang_keluar.index', compact('barangKeluar', 'barang'));
     }
 
@@ -48,7 +49,8 @@ class BarangKeluarController extends Controller
             'id_barang' => [
                 'required',
                 Rule::exists('barang', 'id_barang')->where(function ($query) use ($barangKeluar, $request) {
-                    if ($request->id_barang == $barangKeluar->id_barang) {
+                    // BUG-008 Fix: Gunakan strict comparison (int) === (int)
+                    if ((int) $request->id_barang === (int) $barangKeluar->id_barang) {
                         return $query;
                     }
                     return $query->whereNull('deleted_at');

@@ -21,6 +21,13 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="divisi_supplier" class="form-label">Division</label>
+                        <input type="text" name="divisi" id="divisi_supplier" class="form-input" placeholder="Enter division / jabatan">
+                        @error('divisi')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="kontak_supplier" class="form-label">Contact</label>
                         <input type="text" name="kontak" id="kontak_supplier" class="form-input" placeholder="Enter contact">
                         @error('kontak')
@@ -34,7 +41,7 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="form-group">
+                    <div class="form-group md:col-span-2">
                         <label for="alamat_supplier" class="form-label">Address</label>
                         <input type="text" name="alamat" id="alamat_supplier" class="form-input" placeholder="Enter address">
                         @error('alamat')

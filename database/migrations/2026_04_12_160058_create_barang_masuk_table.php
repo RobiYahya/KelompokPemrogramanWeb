@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('barang_masuk', function (Blueprint $table) {
             $table->bigIncrements('id_masuk');
             $table->unsignedBigInteger('id_barang');
-            $table->unsignedBigInteger('id_user');
-            $table->integer('jumlah');
-            $table->date('tanggal');
+            $table->unsignedBigInteger('id_user')->nullable(); // nullable: transaksi tetap ada saat user dihapus
+            $table->unsignedInteger('jumlah');                 // unsigned: jumlah tidak bisa negatif
+            $table->date('tanggal')->index();                  // index: mempercepat query filter tanggal
             $table->string('deskripsi', 50)->nullable();
             $table->timestamps();
 
@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->foreign('id_user')
                 ->references('id_user')->on('users')
-                ->onDelete('cascade');
+                ->onDelete('set null'); // set null: data transaksi tidak hilang saat user dihapus
         });
     }
 

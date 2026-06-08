@@ -1,4 +1,4 @@
-  -- ============================================================
+-- ============================================================
   -- Buat & pilih database secara otomatis
   -- ============================================================
   CREATE DATABASE IF NOT EXISTS `magura_db`
@@ -56,9 +56,10 @@
   CREATE TABLE `supplier` (
     `id_supplier` bigint unsigned NOT NULL AUTO_INCREMENT,
     `nama_supplier` varchar(50) NOT NULL,
+    `divisi` varchar(50) DEFAULT NULL,
     `kontak` varchar(50) DEFAULT NULL,
-    `no_telp` varchar(50) DEFAULT NULL,
-    `alamat` varchar(50) DEFAULT NULL,
+    `no_telp` varchar(20) DEFAULT NULL,
+    `alamat` varchar(250) DEFAULT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id_supplier`)
@@ -72,8 +73,8 @@
     `nama_barang` varchar(50) NOT NULL,
     `id_kategori` bigint unsigned DEFAULT NULL,
     `id_supplier` bigint unsigned DEFAULT NULL,
-    `stok` int NOT NULL DEFAULT 0,
-    `min_stok` int NOT NULL DEFAULT 10,
+    `stok` int unsigned NOT NULL DEFAULT 0,
+    `min_stok` int unsigned NOT NULL DEFAULT 10,
     `harga` decimal(10,2) NOT NULL DEFAULT 0.00,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
@@ -91,8 +92,8 @@
   CREATE TABLE `barang_masuk` (
     `id_masuk` bigint unsigned NOT NULL AUTO_INCREMENT,
     `id_barang` bigint unsigned NOT NULL,
-    `id_user` bigint unsigned NOT NULL,
-    `jumlah` int NOT NULL,
+    `id_user` bigint unsigned DEFAULT NULL,
+    `jumlah` int unsigned NOT NULL,
     `tanggal` date NOT NULL,
     `deskripsi` varchar(50) DEFAULT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
@@ -100,8 +101,9 @@
     PRIMARY KEY (`id_masuk`),
     KEY `barang_masuk_id_barang_foreign` (`id_barang`),
     KEY `barang_masuk_id_user_foreign` (`id_user`),
+    KEY `barang_masuk_tanggal_index` (`tanggal`),
     CONSTRAINT `barang_masuk_id_barang_foreign` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE CASCADE,
-    CONSTRAINT `barang_masuk_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
+    CONSTRAINT `barang_masuk_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE SET NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
   -- --------------------------------------------------------
@@ -110,8 +112,8 @@
   CREATE TABLE `barang_keluar` (
     `id_keluar` bigint unsigned NOT NULL AUTO_INCREMENT,
     `id_barang` bigint unsigned NOT NULL,
-    `id_user` bigint unsigned NOT NULL,
-    `jumlah` int NOT NULL,
+    `id_user` bigint unsigned DEFAULT NULL,
+    `jumlah` int unsigned NOT NULL,
     `tanggal` date NOT NULL,
     `deskripsi` varchar(50) DEFAULT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
@@ -119,8 +121,9 @@
     PRIMARY KEY (`id_keluar`),
     KEY `barang_keluar_id_barang_foreign` (`id_barang`),
     KEY `barang_keluar_id_user_foreign` (`id_user`),
+    KEY `barang_keluar_tanggal_index` (`tanggal`),
     CONSTRAINT `barang_keluar_id_barang_foreign` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE CASCADE,
-    CONSTRAINT `barang_keluar_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
+    CONSTRAINT `barang_keluar_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE SET NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
   -- --------------------------------------------------------
@@ -128,16 +131,16 @@
   -- --------------------------------------------------------
   CREATE TABLE `histori_aktivitas` (
     `id_histori` bigint unsigned NOT NULL AUTO_INCREMENT,
-    `id_user` bigint unsigned NOT NULL,
+    `id_user` bigint unsigned DEFAULT NULL,
     `aksi` varchar(50) NOT NULL,
     `id_kategori` bigint unsigned DEFAULT NULL,
     `nama_barang` varchar(50) DEFAULT NULL,
     `deskripsi` text NOT NULL,
     `tanggal` timestamp NULL DEFAULT NULL,
-    `updated_at` timestamp NULL DEFAULT NULL,
     PRIMARY KEY (`id_histori`),
     KEY `histori_aktivitas_id_user_foreign` (`id_user`),
-    CONSTRAINT `histori_aktivitas_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
+    KEY `histori_aktivitas_tanggal_index` (`tanggal`),
+    CONSTRAINT `histori_aktivitas_id_user_foreign` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE SET NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
   -- --------------------------------------------------------
