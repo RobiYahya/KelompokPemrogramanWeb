@@ -15,7 +15,10 @@
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="edit_nama_kategori" class="form-label">Category Name</label>
-                    <input type="text" name="nama_kategori" id="edit_nama_kategori" class="form-input" required>
+                    <input type="text" name="nama_kategori" id="edit_nama_kategori" class="form-input" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '').toLowerCase()">
+                    @error('nama_kategori')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="closeModal('modal-kategori-edit')" class="btn btn-secondary">Cancel</button>
@@ -28,7 +31,7 @@
 
 <script>
 function openEditKategoriModal(id, nama) {
-    document.getElementById('form-edit-kategori').action = '/admin/kategori/' + id;
+    document.getElementById('form-edit-kategori').action = '{{ route('kategori.update', ':id') }}'.replace(':id', id);
     document.getElementById('edit_nama_kategori').value = nama;
     openModal('modal-kategori-edit');
 }

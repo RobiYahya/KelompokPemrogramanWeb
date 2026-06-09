@@ -27,7 +27,7 @@
                     @forelse($activityLogs as $log)
                     <tr class="table-body-row">
                         <td class="table-cell">{{ $log->tanggal ? \Carbon\Carbon::parse($log->tanggal)->format('d/m/Y H:i') : '-' }}</td>
-                        <td class="table-cell">{{ $log->user->nama ?? 'Unknown' }}</td>
+                        <td class="table-cell">{{ $log->causer_name ?? $log->user?->nama ?? 'Unknown' }}</td>
                         <td class="table-cell">
                             @if($log->aksi === 'create')
                                 <span class="badge badge-green">Add</span>

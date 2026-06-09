@@ -53,7 +53,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditModalMasuk(@json($item->id_masuk), @json($item->id_barang), @json($item->jumlah), @json($item->tanggal), @json($item->deskripsi))" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditModalMasuk({{ json_encode($item->id_masuk) }}, {{ json_encode($item->id_barang) }}, {{ json_encode($item->jumlah) }}, {{ json_encode($item->tanggal) }}, {{ json_encode($item->deskripsi) }})" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('barang_masuk.destroy', $item->id_masuk) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -79,7 +79,6 @@
     <div class="mt-4">
         {{ $barangMasuk->links() }}
     </div>
+    <x-stock-transaction-modal type="masuk" mode="create" :barang="$barang" />
+    <x-stock-transaction-modal type="masuk" mode="edit" :barang="$barang" />
 @endsection
-
-<x-stock-transaction-modal type="masuk" mode="create" :barang="$barang" />
-<x-stock-transaction-modal type="masuk" mode="edit" :barang="$barang" />

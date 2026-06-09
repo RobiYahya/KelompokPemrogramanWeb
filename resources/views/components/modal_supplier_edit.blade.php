@@ -17,18 +17,27 @@
                     <div class="form-group">
                         <label for="edit_nama_supplier" class="form-label">Supplier Name</label>
                         <input type="text" name="nama_supplier" id="edit_nama_supplier" class="form-input" required>
+                        @error('nama_supplier')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="edit_divisi_supplier" class="form-label">Division</label>
-                        <input type="text" name="divisi" id="edit_divisi_supplier" class="form-input" placeholder="Enter division / jabatan">
+                        <input type="text" name="divisi" id="edit_divisi_supplier" class="form-input" placeholder="Enter division">
+                        @error('divisi')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <label for="edit_kontak_supplier" class="form-label">Contact</label>
+                        <label for="edit_kontak_supplier" class="form-label">Contact Person</label>
                         <input type="text" name="kontak" id="edit_kontak_supplier" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label for="edit_telepon_supplier" class="form-label">Phone</label>
-                        <input type="text" name="no_telp" id="edit_telepon_supplier" class="form-input">
+                        <label for="edit_telepon_supplier" class="form-label">Phone Number</label>
+                        <input type="text" name="no_telp" id="edit_telepon_supplier" class="form-input" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="13">
+                        @error('no_telp')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group md:col-span-2">
                         <label for="edit_alamat_supplier" class="form-label">Address</label>
@@ -46,7 +55,7 @@
 
 <script>
 function openEditSupplierModal(id, nama, divisi, kontak, telepon, alamat) {
-    document.getElementById('form-edit-supplier').action = '/admin/supplier/' + id;
+    document.getElementById('form-edit-supplier').action = '{{ route('supplier.update', ':id') }}'.replace(':id', id);
     document.getElementById('edit_nama_supplier').value = nama;
     document.getElementById('edit_divisi_supplier').value = divisi || '';
     document.getElementById('edit_kontak_supplier').value = kontak || '';

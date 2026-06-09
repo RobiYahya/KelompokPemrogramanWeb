@@ -14,7 +14,8 @@ abstract class BaseStockTransaction implements StockTransactionInterface
     public function store(Request $request): void
     {
         DB::transaction(function () use ($request) {
-            $barang = Barang::where('id_barang', $request->id_barang)
+            $barang = Barang::withTrashed()
+                ->where('id_barang', $request->id_barang)
                 ->lockForUpdate()
                 ->first();
 

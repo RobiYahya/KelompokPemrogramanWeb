@@ -54,7 +54,7 @@
                         </td>
                         <td class="table-cell">
                             <div class="action-buttons">
-                                <button onclick="openEditUserModal(@json($user->id_user), @json($user->nama), @json($user->email), @json($user->id_pegawai), @json($user->role))" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditUserModal({{ json_encode($user->id_user) }}, {{ json_encode($user->nama) }}, {{ json_encode($user->email) }}, {{ json_encode($user->id_pegawai) }}, {{ json_encode($user->role) }})" class="btn btn-sm btn-primary">Edit</button>
                                 @if($user->id_user !== auth()->user()->id_user)
                                 <form action="{{ route('users.destroy', $user->id_user) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                     @csrf
@@ -79,18 +79,17 @@
     <div class="mt-4">
         {{ $users->links() }}
     </div>
+    @include('components.modal_user')
+    @include('components.modal_user_edit')
+
+    <script>
+    function openEditUserModal(id, name, email, idPegawai, role) {
+        document.getElementById('form-edit-user').action = '{{ route('users.update', ':id') }}'.replace(':id', id);
+        document.getElementById('edit_name').value = name;
+        document.getElementById('edit_email').value = email;
+        document.getElementById('edit_id_pegawai').value = idPegawai;
+        document.getElementById('edit_role').value = role;
+        openModal('modal-user-edit');
+    }
+    </script>
 @endsection
-
-@include('components.modal_user')
-@include('components.modal_user_edit')
-
-<script>
-function openEditUserModal(id, name, email, idPegawai, role) {
-    document.getElementById('form-edit-user').action = '{{ route('users.update', ':id') }}'.replace(':id', id);
-    document.getElementById('edit_name').value = name;
-    document.getElementById('edit_email').value = email;
-    document.getElementById('edit_id_pegawai').value = idPegawai;
-    document.getElementById('edit_role').value = role;
-    openModal('modal-user-edit');
-}
-</script>

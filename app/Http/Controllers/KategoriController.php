@@ -17,11 +17,18 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kategori' => 'required|string|max:50',
+            'nama_kategori' => [
+                'required',
+                'string',
+                'max:50',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+        ], [
+            'nama_kategori.regex' => 'Kategori hanya boleh berisi huruf.',
         ]);
 
-        $namaKategori = trim($request->nama_kategori);
-        $exists = Kategori::whereRaw('LOWER(nama_kategori) = ?', [strtolower($namaKategori)])->exists();
+        $namaKategori = strtolower(trim($request->nama_kategori));
+        $exists = Kategori::where('nama_kategori', $namaKategori)->exists();
         if ($exists) {
             return redirect()->back()
                 ->withErrors(['nama_kategori' => 'This category already exists.'])
@@ -39,11 +46,18 @@ class KategoriController extends Controller
     public function update(Request $request, Kategori $kategori)
     {
         $request->validate([
-            'nama_kategori' => 'required|string|max:50',
+            'nama_kategori' => [
+                'required',
+                'string',
+                'max:50',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+        ], [
+            'nama_kategori.regex' => 'Kategori hanya boleh berisi huruf.',
         ]);
 
-        $namaKategori = trim($request->nama_kategori);
-        $exists = Kategori::whereRaw('LOWER(nama_kategori) = ?', [strtolower($namaKategori)])
+        $namaKategori = strtolower(trim($request->nama_kategori));
+        $exists = Kategori::where('nama_kategori', $namaKategori)
             ->where('id_kategori', '!=', $kategori->id_kategori)
             ->exists();
         if ($exists) {

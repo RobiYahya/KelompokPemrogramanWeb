@@ -8,7 +8,7 @@
             <h1 class="card-title">Dashboard</h1>
             <p class="card-subtitle">Welcome, {{ auth()->user()->nama }} ({{ auth()->user()->role === 'admin' ? 'Admin' : (auth()->user()->role === 'manager' ? 'Manager' : 'Super Admin') }})</p>
         </div>
-        @if(in_array(auth()->user()->role, ['admin', 'manager', 'super_admin']))
+        @if(auth()->user()->role === 'manager')
         <div class="mt-4 sm:mt-0">
             <button onclick="openModal('modal-download-report')" class="btn btn-primary">Download Report</button>
         </div>
@@ -133,8 +133,7 @@
             </table>
         </div>
     </div>
+    @if(auth()->user()->role === 'manager')
+    @include('components.modal_download_report')
+    @endif
 @endsection
-
-@if(in_array(auth()->user()->role, ['admin', 'manager', 'super_admin']))
-@include('components.modal_download_report')
-@endif

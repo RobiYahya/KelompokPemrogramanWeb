@@ -18,7 +18,7 @@ class Kategori extends Model
         if (strlen($prefix) < 3) {
             $prefix = str_pad($prefix, 3, 'x');
         }
-        return $prefix . str_pad($this->id_kategori, 2, '0', STR_PAD_LEFT);
+        return $prefix . str_pad($this->id_kategori, 4, '0', STR_PAD_LEFT);
     }
 
     public function barang()

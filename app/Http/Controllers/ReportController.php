@@ -50,7 +50,7 @@ class ReportController extends Controller
                     'date'        => $item->tanggal
                                         ? Carbon::parse($item->tanggal)->format('d/m/Y H:i')
                                         : '-',
-                    'user'        => $item->user->nama ?? 'Unknown',
+                    'user'        => $item->causer_name ?? $item->user?->nama ?? 'Unknown',
                     'action'      => $aksi,
                     'item_name'   => $item->nama_barang ?? '-',
                     'category_id' => $kategoriId,
@@ -316,7 +316,7 @@ class ReportController extends Controller
 
                 return '<tr>
                     <td>' . $h($formattedDate) . '</td>
-                    <td>' . $h($item->user->nama ?? '-') . '</td>
+                    <td>' . $h($item->causer_name ?? $item->user?->nama ?? '-') . '</td>
                     <td>' . $h($aksi) . '</td>
                     <td>' . $h($item->nama_barang ?? '-') . '</td>
                     <td>' . $h($kategoriId) . '</td>
@@ -379,7 +379,7 @@ class ReportController extends Controller
 
                 return [
                     $formattedDate,
-                    $item->user->nama ?? 'Unknown',
+                    $item->causer_name ?? $item->user?->nama ?? 'Unknown',
                     $aksi,
                     $item->nama_barang ?? '-',
                     $kategoriId,

@@ -47,7 +47,8 @@
     `nama_kategori` varchar(50) NOT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id_kategori`)
+    PRIMARY KEY (`id_kategori`),
+    UNIQUE KEY `kategori_nama_kategori_unique` (`nama_kategori`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
   -- --------------------------------------------------------
@@ -58,7 +59,7 @@
     `nama_supplier` varchar(50) NOT NULL,
     `divisi` varchar(50) DEFAULT NULL,
     `kontak` varchar(50) DEFAULT NULL,
-    `no_telp` varchar(20) DEFAULT NULL,
+    `no_telp` varchar(13) NOT NULL,
     `alamat` varchar(250) DEFAULT NULL,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
@@ -132,6 +133,7 @@
   CREATE TABLE `histori_aktivitas` (
     `id_histori` bigint unsigned NOT NULL AUTO_INCREMENT,
     `id_user` bigint unsigned DEFAULT NULL,
+    `causer_name` varchar(100) DEFAULT NULL,
     `aksi` varchar(50) NOT NULL,
     `id_kategori` bigint unsigned DEFAULT NULL,
     `nama_barang` varchar(50) DEFAULT NULL,

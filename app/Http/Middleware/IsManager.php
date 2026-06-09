@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsAdminOrManager
+class IsManager
 {
     /**
      * Handle an incoming request.
@@ -14,7 +14,7 @@ class IsAdminOrManager
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check() || !in_array(auth()->user()->role, ['admin', 'manager'])) {
+        if (!auth()->check() || auth()->user()->role !== 'manager') {
             return redirect()->route('dashboard')->with('error', 'You do not have access to this page.');
         }
         return $next($request);

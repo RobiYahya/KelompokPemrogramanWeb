@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('histori_aktivitas', function (Blueprint $table) {
             $table->bigIncrements('id_histori');
             $table->unsignedBigInteger('id_user')->nullable(); // nullable: audit log tetap ada saat user dihapus
+            $table->string('causer_name', 100)->nullable();    // snapshot nama user saat log ditulis; survive hard-delete
             $table->string('aksi', 50);
             $table->unsignedBigInteger('id_kategori')->nullable();
             $table->string('nama_barang', 50)->nullable();

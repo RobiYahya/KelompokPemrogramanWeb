@@ -53,7 +53,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditSupplierModal(@json($item->id_supplier), @json($item->nama_supplier), @json($item->divisi), @json($item->kontak), @json($item->no_telp), @json($item->alamat))" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditSupplierModal({{ json_encode($item->id_supplier) }}, {{ json_encode($item->nama_supplier) }}, {{ json_encode($item->divisi) }}, {{ json_encode($item->kontak) }}, {{ json_encode($item->no_telp) }}, {{ json_encode($item->alamat) }})" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('supplier.destroy', $item->id_supplier) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -79,7 +79,6 @@
     <div class="mt-4">
         {{ $supplier->links() }}
     </div>
+    @include('components.modal_supplier')
+    @include('components.modal_supplier_edit')
 @endsection
-
-@include('components.modal_supplier')
-@include('components.modal_supplier_edit')

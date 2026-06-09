@@ -114,10 +114,7 @@
                                 @endif
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="edit_stok_barang" class="form-label">Stock</label>
-                            <input type="number" name="stok" id="edit_stok_barang" class="form-input" required>
-                        </div>
+
                         <div class="form-group">
                             <label for="edit_minimum_stok_barang" class="form-label">Minimum Stock</label>
                             <input type="number" name="min_stok" id="edit_minimum_stok_barang" class="form-input" required>
@@ -134,12 +131,11 @@
                 </form>
 
                 <script>
-                function openEditBarangModal(id, nama, kategoriId, supplierId, stok, minimumStok, hargaBeli) {
+                function openEditBarangModal(id, nama, kategoriId, supplierId, minimumStok, hargaBeli) {
                     document.getElementById('form-edit-barang').action = '{{ route('barang.update', ':id') }}'.replace(':id', id);
                     document.getElementById('edit_nama_barang').value = nama;
                     document.getElementById('edit_kategori_barang').value = kategoriId;
                     document.getElementById('edit_supplier_barang').value = supplierId;
-                    document.getElementById('edit_stok_barang').value = stok;
                     document.getElementById('edit_minimum_stok_barang').value = minimumStok;
                     document.getElementById('edit_harga_beli_barang').value = hargaBeli;
                     openModal('modal-barang-edit');

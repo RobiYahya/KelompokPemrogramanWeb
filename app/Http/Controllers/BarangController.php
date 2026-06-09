@@ -45,13 +45,12 @@ class BarangController extends Controller
             'nama_barang' => 'required|string|max:50',
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'id_supplier' => 'required|exists:supplier,id_supplier',
-            'stok'        => 'required|integer|min:0',
             'min_stok'    => 'required|integer|min:0',
             'harga'       => 'required|numeric|min:0',
         ]);
 
         $barang->update($request->only([
-            'nama_barang', 'id_kategori', 'id_supplier', 'stok', 'min_stok', 'harga'
+            'nama_barang', 'id_kategori', 'id_supplier', 'min_stok', 'harga'
         ]));
 
         ActivityLog::log('update', 'Updated item: ' . $barang->nama_barang, $barang->id_kategori, $barang->nama_barang);

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_supplier', 50);
             $table->string('divisi', 50)->nullable();
             $table->string('kontak', 50)->nullable();
-            $table->string('no_telp', 20)->nullable();
+            $table->string('no_telp', 13);
             $table->string('alamat', 250)->nullable();
             $table->timestamps();
         });

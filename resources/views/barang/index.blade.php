@@ -55,7 +55,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditBarangModal(@json($item->id_barang), @json($item->nama_barang), @json($item->id_kategori), @json($item->id_supplier), @json($item->stok), @json($item->min_stok), @json($item->harga))" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditBarangModal({{ json_encode($item->id_barang) }}, {{ json_encode($item->nama_barang) }}, {{ json_encode($item->id_kategori) }}, {{ json_encode($item->id_supplier) }}, {{ json_encode($item->min_stok) }}, {{ json_encode($item->harga) }})" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('barang.destroy', $item->id_barang) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -81,7 +81,6 @@
     <div class="mt-4">
         {{ $barang->links() }}
     </div>
+    <x-barang-modal mode="create" :kategori="$kategori" :supplier="$supplier" />
+    <x-barang-modal mode="edit" :kategori="$kategori" :supplier="$supplier" />
 @endsection
-
-<x-barang-modal mode="create" :kategori="$kategori" :supplier="$supplier" />
-<x-barang-modal mode="edit" :kategori="$kategori" :supplier="$supplier" />

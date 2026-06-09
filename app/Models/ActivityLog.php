@@ -15,6 +15,7 @@ class ActivityLog extends Model
 
     protected $fillable = [
         'id_user',
+        'causer_name',
         'aksi',
         'id_kategori',
         'nama_barang',
@@ -43,6 +44,7 @@ class ActivityLog extends Model
     ): void {
         static::create([
             'id_user'     => auth()->id(),
+            'causer_name' => auth()->user()?->nama,
             'aksi'        => $aksi,
             'id_kategori' => $idKategori,
             'nama_barang' => $namaBarang,

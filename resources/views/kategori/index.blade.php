@@ -73,7 +73,7 @@
                         <td class="table-cell">
                             @if(auth()->user()->role === 'admin')
                             <div class="action-buttons">
-                                <button onclick="openEditKategoriModal(@json($item->id_kategori), @json($item->nama_kategori))" class="btn btn-sm btn-primary">Edit</button>
+                                <button onclick="openEditKategoriModal({{ json_encode($item->id_kategori) }}, {{ json_encode($item->nama_kategori) }})" class="btn btn-sm btn-primary">Edit</button>
                                 <form action="{{ route('kategori.destroy', $item->id_kategori) }}" method="POST" class="contents" onsubmit="return confirm('Are you sure you want to delete this category?')">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
@@ -99,7 +99,6 @@
     <div class="mt-4">
         {{ $kategori->links() }}
     </div>
+    @include('components.modal_kategori')
+    @include('components.modal_kategori_edit')
 @endsection
-
-@include('components.modal_kategori')
-@include('components.modal_kategori_edit')

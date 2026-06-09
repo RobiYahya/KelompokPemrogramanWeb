@@ -22,21 +22,21 @@
                     </div>
                     <div class="form-group">
                         <label for="divisi_supplier" class="form-label">Division</label>
-                        <input type="text" name="divisi" id="divisi_supplier" class="form-input" placeholder="Enter division / jabatan">
+                        <input type="text" name="divisi" id="divisi_supplier" class="form-input" placeholder="Enter division">
                         @error('divisi')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="kontak_supplier" class="form-label">Contact</label>
-                        <input type="text" name="kontak" id="kontak_supplier" class="form-input" placeholder="Enter contact">
+                        <label for="kontak_supplier" class="form-label">Contact Person</label>
+                        <input type="text" name="kontak" id="kontak_supplier" class="form-input" placeholder="Enter contact person">
                         @error('kontak')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="telepon_supplier" class="form-label">Phone</label>
-                        <input type="text" name="no_telp" id="telepon_supplier" class="form-input" placeholder="Enter phone">
+                        <label for="telepon_supplier" class="form-label">Phone Number</label>
+                        <input type="text" name="no_telp" id="telepon_supplier" class="form-input" placeholder="Enter 10–13 digit phone number" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="13">
                         @error('no_telp')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror

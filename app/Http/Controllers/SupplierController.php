@@ -20,8 +20,11 @@ class SupplierController extends Controller
             'nama_supplier' => 'required|string|max:50',
             'divisi'        => 'nullable|string|max:50',
             'kontak'        => 'nullable|string|max:50',
-            'no_telp'       => 'nullable|string|max:20',
+            'no_telp'       => 'required|digits_between:10,13',
             'alamat'        => 'nullable|string|max:250',
+        ], [
+            'no_telp.required'       => 'Nomor telepon wajib diisi.',
+            'no_telp.digits_between' => 'Nomor telepon harus terdiri dari 10–13 angka saja.',
         ]);
 
         $supplier = Supplier::create([
@@ -43,8 +46,11 @@ class SupplierController extends Controller
             'nama_supplier' => 'required|string|max:50',
             'divisi'        => 'nullable|string|max:50',
             'kontak'        => 'nullable|string|max:50',
-            'no_telp'       => 'nullable|string|max:20',
+            'no_telp'       => 'required|digits_between:10,13',
             'alamat'        => 'nullable|string|max:250',
+        ], [
+            'no_telp.required'       => 'Nomor telepon wajib diisi.',
+            'no_telp.digits_between' => 'Nomor telepon harus terdiri dari 10–13 angka saja.',
         ]);
 
         $supplier->update([
